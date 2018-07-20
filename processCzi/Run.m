@@ -3,9 +3,9 @@ CZI_SUF = '.czi';
 
 
 %% Add MATLAB Utilities for BioFormats 
-addpath('../../Utilities/src/MATLAB')
+addpath('../Utilities/src/MATLAB')
 
-addpath('../aeplClasses')
+%addpath('../aeplClasses')
 
 
 %% Directory 
@@ -19,7 +19,9 @@ f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
 
 exper = struct();
-exper.folder = f16_06_23;
+%exper.folder = f16_06_23;
+
+exper.folder = guiGetDir('/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/');
 
 %%
 tic
@@ -27,7 +29,7 @@ tic
 [~,exper.name] = fileparts(exper.folder(1:end-1));
 
 
-exper.plateMapFile = strcat(exper.folder,exper.name,PLATE_MAP_SUF);
+exper.plateMapFile = fullfile(exper.folder,[exper.name,PLATE_MAP_SUF]);
 
 [exper.conditions,exper.conditDict] = MakeConditDict(exper.plateMapFile);
 
