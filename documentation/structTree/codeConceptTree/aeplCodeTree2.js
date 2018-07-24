@@ -2,7 +2,7 @@
     var chart_config = {
         chart: {
             container: "#aepl",
-            rootOrientation: "WEST",
+            //rootOrientation: "WEST",
             connectors: {
               type: 'curve'
               //type: 'bCurve'
@@ -27,27 +27,14 @@
           HTMLclass : 'dirNode',
 
           children: [
-            {
-              pseudo: true,
-              //stackChildren: true,
-              children: [
-                {
-                  text: { name: "info.docu" },
-                  HTMLclass : 'fileNode',
-                  collapsed: true,
-                },
-                {
-                  text: { name: "msg.docu" },
-                  HTMLclass : 'fileNode',
-                  collapsed: true,
-                },
-              ]
-            },
+
+
+
 
             {
 
               pseudo: true,
-              childrenDropLevel: 1,
+              //childrenDropLevel: 1,
               children: [
                 {
                   text: { name: "aeplUtil" },
@@ -72,7 +59,7 @@
             },
             {
               pseudo: true,
-              childrenDropLevel: 4,
+              childrenDropLevel: 1,
               children: [
                 {
                   text: { name: "processCzi" },
@@ -80,63 +67,87 @@
 
                   children: [
                     {
-                      text: { name: "DrawTracks.m" },
-                      HTMLclass : 'fileNodeC',
-                      collapsed: true,
+                      text: { name: "(Run.m)", title: "(Run2.m)" },
+                      HTMLclass : 'fileNode',
+                      //collapsed: true,
                       children: [
                         {
-                          text: { desc: "idk"  },
-                          HTMLclass : 'infoNode',
-                        }
-                      ]
-                    },
-                    {
-                      text: { name: "ExportTrackStats.m" },
-                      HTMLclass : 'fileNode',
-                      collapsed: true,
-
-                    },
-                    {
-                      text: { name: "getTracks.m" },
-                      HTMLclass : 'fileNode',
-                      collapsed: true,
-                    },
-                    {
-                      text: { name: "Mak2eConditDict.m" },
-                      HTMLclass : 'fileNode',
-                      collapsed: true,
-                    },
-                    {
-                      pseudo: true,
-                      childrenDropLevel: 2,
-                      children: [
-                        {
-                          text: { name: "MakeMovie.m" },
+                          text: { name: "(Mak2eConditDict.m)" },
                           HTMLclass : 'fileNode',
                           collapsed: true,
+                          children: [
+                            {
+                              text: { desc: "idk"  },
+                              HTMLclass : 'infoNode',
+                            }
+                          ]
                         },
                         {
-                          text: { name: "Run.m" },
-                          HTMLclass : 'fileNode',
-                          collapsed: true,
-                        },
-                        {
-                          text: { name: "Run2.m" },
+                          text: { name: "<MicroscopeData.", title: "Original.", desc: "ReadData>" },
                           HTMLclass : 'fileNode',
                           collapsed: true,
                         },
                         {
                           text: { name: "segIms.m" },
                           HTMLclass : 'fileNode',
-                          collapsed: true,
+                          //collapsed: true,
+                          children: [
+                            {
+                              text: { name: "segTexture_MSKCC.m" },
+                              HTMLclass : 'fileNode',
+                              collapsed: true,
+                            },
+
+
+                          ]
                         },
-                        {
-                          text: { name: "segTexture_MSKCC.m" },
-                          HTMLclass : 'fileNode',
-                          collapsed: true,
-                        },
+                        // {
+                        //   pseudo: true,
+                        //   //childrenDropLevel: ,
+                        //   children: [
+                            {
+                              text: { name: "getTracks.m" },
+                              HTMLclass : 'fileNode',
+                              collapsed: true,
+                              children: [
+                                {
+                                  text: { desc: "idk"  },
+                                  HTMLclass : 'infoNode',
+                                }
+                              ]
+                            },
+                            {
+                              text: { name: "DrawTracks.m", title: "ExportTrackStats.m" },
+                              HTMLclass : 'fileNode',
+                              //collapsed: true,
+                              children: [
+                                {
+                                  text: { name: "MakeMovie.m" },
+                                  HTMLclass : 'fileNode',
+                                  collapsed: true,
+                                  children: [
+                                    {
+                                      text: { desc: "idk"  },
+                                      HTMLclass : 'infoNode',
+                                    }
+                                  ]
+                                },
+                              ]
+                            },
+                          // ]
+                        // },
+
+
                       ]
-                    }
+                    },
+
+
+
+
+
+
+
+
                   ]
                 }
               ]
@@ -144,7 +155,7 @@
           },
           {
             pseudo: true,
-            //childrenDropLevel: 1,
+            childrenDropLevel: 4,
             children: [
                 {
                   text: { name: "readPlotCsv" },
