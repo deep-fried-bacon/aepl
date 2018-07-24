@@ -15,4 +15,8 @@ f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 exper = struct();
 
 %exper.folder = f16_06_23;
-exper.folder = uigetdir('/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/');
+%exper.folder = uigetdir('/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/');
+exper.folder = uigetdir();
+
+options = aeplUi();
+disp(options)

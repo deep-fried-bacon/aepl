@@ -1,6 +1,7 @@
-function options = aeplUi
+function aeplUi
+%global options
 w = 400;
-h = 200;
+h = 250;
 
 bg = figure();
 bg.Position(3) = w;
@@ -19,32 +20,52 @@ opt3 = "Raw csv files to figures";
 buttonText = 'Run';
 
 
-r1 = uicontrol(bg,'Style',...
+r1 = uicontrol('Style',...
                   'checkbox',...
                   'String', opt1,...
-                  'Position',[padding, h - (rh + 10), rw, rh],...
-                  'FontSize', 14,...
-                  'HandleVisibility','off');
-              
-r2 = uicontrol(bg,'Style','checkbox',...
-                  'String',opt2,...
                   'Position',[padding, h - 2*(rh + 10), rw, rh],...
                   'FontSize', 14,...
                   'HandleVisibility','off');
-
-r3 = uicontrol(bg,'Style','checkbox',...
-                  'String', opt3,...
+              
+r2 = uicontrol('Style','checkbox',...
+                  'String',opt2,...
                   'Position',[padding, h - 3*(rh + 10), rw, rh],...
                   'FontSize', 14,...
                   'HandleVisibility','off');
+
+r3 = uicontrol('Style','checkbox',...
+                  'String', opt3,...
+                  'Position',[padding, h - 4*(rh + 10), rw, rh],...
+                  'FontSize', 14,...
+                  'HandleVisibility','off',...
+              'Callback', @text_Callback);
               
 
 bw = 100;
 
 btn = uicontrol('Style', 'pushbutton', 'String', buttonText,...
-                    'Position', [w - (bw + 50), h - 4*(rh + 10), bw, rh],...
+                    'Position', [w - (bw + 50), h - 5*(rh + 10), bw, rh],...
                     'FontSize', 14,...
                     'Callback', @pushbutton1_Callback);     
+
+btn = uicontrol('Style', 'pushbutton', 'String', "path",...
+                    'Position', [10, h - (rh + 10), bw, rh],...
+                    'FontSize', 14,...
+                    'Callback', @text_Callback); 
+                
+text = uicontrol('Style', 'edit', 'String', '',...
+    'Position', [120, h - (rh + 10), rw, rh],...
+    'FontSize', 14,...
+    'ButtonDownFcn', @text_Callback);     
+
+    function text_Callback(hObject,eventdata, handles) 
+        temp = uigetdir();
+        temp2 = hObject.Parent
+        get(hObject.Parent)
+        disp(hObject.Parent.Children(1))
+        hObject.Value = temp;
+    end
+
               
                 
 
@@ -60,13 +81,23 @@ bg.Visible = 'on';
         %disp(r1)
         %disp(r2)
         %disp(r3)
-        display('Goodbye');
-        hObject.UserData = [r1.Value r2.Value r3.Value];
-        get(hObject)
+        %display('Goodbye');
+        %disp(handles)
+        %disp(hObject.Parent)
+        hObject.Parent.UserData = [r1.Value r2.Value r3.Value];
+        %options = [r1.Value r2.Value r3.Value];
+        %options = btn.UserData;
 
-        %close(gcf);
-    end
+        %get(hObject)
         
-options = btn.UserData
-    
+
+        hide(gcf);
+    end
+%uiwait()
+%options = bg.UserData;
+%close(gcf)
 end
+
+
+
+
