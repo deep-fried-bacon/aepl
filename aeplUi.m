@@ -1,5 +1,6 @@
 function aeplUi
-%global options
+global options
+global path
 w = 400;
 h = 250;
 
@@ -59,11 +60,7 @@ text = uicontrol('Style', 'edit', 'String', '',...
     'ButtonDownFcn', @text_Callback);     
 
     function text_Callback(hObject,eventdata, handles) 
-        temp = uigetdir();
-        temp2 = hObject.Parent
-        get(hObject.Parent)
-        disp(hObject.Parent.Children(1))
-        hObject.Value = temp;
+       
     end
 
               
@@ -82,7 +79,7 @@ bg.Visible = 'on';
         %disp(r2)
         %disp(r3)
         %display('Goodbye');
-        %disp(handles)
+        %disp(handles).
         %disp(hObject.Parent)
         hObject.Parent.UserData = [r1.Value r2.Value r3.Value];
         %options = [r1.Value r2.Value r3.Value];
