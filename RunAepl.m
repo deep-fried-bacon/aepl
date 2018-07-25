@@ -1,5 +1,6 @@
 
-%% two parts - options code and calling code
+%% RunAepl  -  beta | dev
+% two parts - options code and calling code
 %     options code   (beta)
 %         get path and options from user
 %         fields of struct options
@@ -151,13 +152,13 @@ function RunAepl
 %% calling code
 
     if options.procCzi 
-        ProcessCzi.Run(options.experPath)
+        MakeData.ProcessCzi.Run(options.experPath)
     end
     if options.summar
-        SummarizeData.Run(options.experPath)
+        ReadData.SummarizeData.Run(options.experPath)
     end
     if options.makePlots
-        MakePlots.Run(options.experPath)
+        ReadData.MakePlots.Run(options.experPath)
     end
                     
                     
