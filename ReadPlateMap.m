@@ -1,4 +1,14 @@
-function [conditions,conditWellMap, groupConditMap] = readPlateMap(plateMapFile)
+%% ReadPlateMap  -  beta
+%   takes path of plate map
+%   reads it in and
+%   returns conditWellMap
+%       map of 
+%       conditions (str) -> wells (str[])
+%
+
+
+
+function [conditions,conditWellMap, groupConditMap] = ReadPlateMap(plateMapFile)
 
     ttable = readtable(plateMapFile,'Delimiter',',','ReadVariableNames',false);
 

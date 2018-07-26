@@ -26,25 +26,44 @@
 
 function RunAepl
 %% options code
-    dev = true;
+    global CONST
+    CONST = struct();
+    
+    CONST.PLATE_MAP_SUF = '_plate-map.csv';
+    CONST.CZI_SUF = '.czi';
+    CONST.CONDIT_DATA_SUF = '-veloc-conditions.csv';
+    CONST.WELL_DATA_SUF = '-veloc-wells.csv';
+    CONST.PLOT_SUF = '-veloc-plot.pdf';
+
+    
+    CONST.CZI_DIR = '';
+    CONST.CSV_DIR = 'Csv';
+    CONST.PROCESSED_DIR = 'ProcessedData';
+    
+    CONST.COL_LAYOUT_VER = '4 cols';
+    %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
+    
+    
     
     %% callback functions for gui
 
     function dirDialog_Callback(hObject,eventdata, handles) 
-            pathBox.String = uigetdir();
-        end
+        pathBox.String = uigetdir();
+    end
 
-        function runButt_Callback(hObject,eventdata, handles) 
-            temp = struct();
-            temp.experPath = pathBox.String;
-            temp.procCzi = procCzi.Value;
-            temp.summar = summar.Value;
-            temp.makePlots = makePlots.Value;
+    function runButt_Callback(hObject,eventdata, handles) 
+        temp = struct();
+        temp.experPath = pathBox.String;
+        temp.procCzi = procCzi.Value;
+        temp.summar = summar.Value;
+        temp.makePlots = makePlots.Value;
 
-            guidata(f,temp)
-            uiresume()
-        end
+        guidata(f,temp)
+        uiresume()
+    end
     
+    dev = true;
+
     if ~dev
 
     %% gui

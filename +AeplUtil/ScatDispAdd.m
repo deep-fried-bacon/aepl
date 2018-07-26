@@ -1,4 +1,4 @@
-function scatDisp(data1,data2)
+function ScatDispAdd(data1,data2)
 
 
 %     blu =   [0.00,0.45,0.75];

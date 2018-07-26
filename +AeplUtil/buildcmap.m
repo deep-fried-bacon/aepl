@@ -1,4 +1,4 @@
-function cmap = buildcmap(f1)
+function cmap = BuildCmap(f1)
 % Constructs a colormap corresponding to the amplitude of the
 % one-dimensional input signal.
 %

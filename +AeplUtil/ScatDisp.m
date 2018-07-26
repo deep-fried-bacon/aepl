@@ -38,7 +38,7 @@ function f = scatDisp(data1,data2)
     end
     
     %count = size(x)
-    cmap = buildcmap([1:count]);
+    cmap = BuildCmap([1:count]);
     figure('ColorMap',cmap)
     c = colorbar('Ticks',[]);
         hold on
