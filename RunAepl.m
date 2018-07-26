@@ -1,5 +1,5 @@
 
-%% RunAepl  -  beta | dev
+%% RunAepl  -  beta 
 % two parts - options code and calling code
 %     options code   (beta)
 %         get path and options from user
@@ -34,6 +34,9 @@ function RunAepl
     CONST.CONDIT_DATA_SUF = '-veloc-conditions.csv';
     CONST.WELL_DATA_SUF = '-veloc-wells.csv';
     CONST.PLOT_SUF = '-veloc-plot.pdf';
+   
+    CONST.AVG_PREF = 'Avg';
+    CONST.MEDI_PREF = 'Median';
 
     
     CONST.CZI_DIR = '';
@@ -85,7 +88,7 @@ function RunAepl
 
     %% make figure
 
-        set(0,'DefaultFigureWindowStyle','docked')
+        %set(0,'DefaultFigureWindowStyle','docked')
         f = figure();
 
 
@@ -161,12 +164,12 @@ function RunAepl
         
         f17_06_28 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
         f17_07_13 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-07-13 and 20170629 first plate fda screen/7.13.17 Part b/Whitney2/';
+        f18_06_20 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
+        options.experPath =  f18_06_20;
         
-        options.experPath =  f17_07_13;
         
-        
-        options.procCzi = 1;
-        options.summar = 0;
+        options.procCzi = 0;
+        options.summar = 1;
         options.makePlots = 0;
         
         

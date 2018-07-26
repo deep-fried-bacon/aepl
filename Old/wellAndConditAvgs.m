@@ -25,6 +25,9 @@ function wellAndConditAvgs(exper, condits)
     wCol = wCol + 1;
     
     for condit = condits
+        
+        if ~isfield(condit,mat) 
+            condit.mat = 
         conditAvg = nanmean(condit.mat,2);
         conditC{1,cCol} = condit.name;
         conditC(2:length(conditAvg)+1, cCol) = num2cell(conditAvg);

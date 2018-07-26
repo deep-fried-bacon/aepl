@@ -6,13 +6,15 @@
 
 
 function fullpath = FindFile(folder, pattern)
-   contents = dir(folder);
-   for i = 1:length(contents)
-       if contains(contents(i),pattern)
+
+    contents = dir(folder);
+    
+    for i = 1:length(contents)
+        if contains(contents(i).name,pattern)
            fullpath = fullfile(folder,contents(i).name);
            return
-       end
-   end
+        end
+    end
    
    fullpath = false;
 end

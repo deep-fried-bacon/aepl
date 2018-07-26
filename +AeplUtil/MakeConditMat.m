@@ -1,4 +1,4 @@
-%% MakeConditMat  -  dev
+%% MakeConditMat  -  alpha
 %   takes a condit and gets all displacement columns
 %   returns condit with new field condit.mat - matrix of displacement cols
 %

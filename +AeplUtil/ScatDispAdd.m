@@ -26,9 +26,9 @@ function ScatDispAdd(data1,data2)
         x = data1;
         y = data2;
         boop = size(data1);
-        if boop(1) == 2
+        if boop(1) == 1
             count = boop(2);
-        elseif boop(2) == 2
+        elseif boop(2) == 1
             count = boop(1);
         end
     end
@@ -39,6 +39,8 @@ function ScatDispAdd(data1,data2)
     
     %count = size(x)
     hold on
+    cmap = AeplUtil.BuildCmap([1:count]);
+    
     scatter(x,y,[],cmap,'filled')
     %get(c)
     hold off

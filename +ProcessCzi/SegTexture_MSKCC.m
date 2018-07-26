@@ -1,5 +1,5 @@
-%%  SegTexture_MSKCC  -  stable
-%       part of Epl
+%%  SegTexture_MSKCC  -  Epl
+%       from Epl
 %       little to no changes on my part
 %
 

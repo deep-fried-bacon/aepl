@@ -1,4 +1,4 @@
-%% PlotData  -  dev
+%% PlotData  -  alpha
 %   wrapper function for calling the heavy-lifters that make plots
 %
 %   assumes plate map has groups
@@ -27,9 +27,9 @@ function RunPlotData(experPath)
     %SUB_DIR = 'pdfPlots';
     %PLOT_SUF = '-plot.pdf';
 
-    plotsDir = fullfile(exper.folder, CONST.PROCESSED_DIR);
-    if ~exist(myPath,'dir')
-        mkdir(myPath)
+    procDir = fullfile(exper.folder, CONST.PROCESSED_DIR);
+    if ~exist(procDir,'dir')
+        mkdir(procDir)
     end    
 
     exper.t_int = (1/6):(1/6):(exper.frames+10/6);
@@ -53,7 +53,7 @@ function RunPlotData(experPath)
             cond = exper.conditIndexMap(conditName);
 %              try
                %temp  = makeConditMat(condits(cond));
-               temp = MakeConditMat(condits(cond));
+               temp = AeplUtil.MakeConditMat(condits(cond));
                condits2(cond)= temp;
 %             catch e
 %                 disp(conditName)
@@ -63,7 +63,7 @@ function RunPlotData(experPath)
             title(conditName)
             
             %plottyPlot(condits2(cond).mat,exper);
-            MakeConditSubplot(condits2(cond).mat,exper)
+            PlotData.MakeConditSubplot(condits2(cond).mat,exper)
             plotNum = plotNum + 1;
         end
         h = gcf;
@@ -74,7 +74,7 @@ function RunPlotData(experPath)
 %         
         fname = [group{1},CONST.PLOT_SUF];
         
-        print(h,fullfile(plotsDir,fname),'-dpdf')
+        print(h,fullfile(procDir,fname),'-dpdf')
 %         close(h)
     end
     %condits = condits2;

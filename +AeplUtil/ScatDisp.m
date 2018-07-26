@@ -10,7 +10,8 @@ function f = scatDisp(data1,data2)
 %     red =   [0.64,0.08,0.18];
 %     
 %     myColors = [blu;ora;yel;gree;purp;lblu;red]
-    
+    %count = 100
+    disp(nargin)
     if nargin == 1
         boop = size(data1);
         if boop(1) == 2
@@ -26,9 +27,9 @@ function f = scatDisp(data1,data2)
         x = data1;
         y = data2;
         boop = size(data1);
-        if boop(1) == 2
+        if boop(1) == 1
             count = boop(2);
-        elseif boop(2) == 2
+        elseif boop(2) == 1
             count = boop(1);
         end
     end
@@ -38,7 +39,7 @@ function f = scatDisp(data1,data2)
     end
     
     %count = size(x)
-    cmap = BuildCmap([1:count]);
+    cmap = AeplUtil.BuildCmap([1:count]);
     figure('ColorMap',cmap)
     c = colorbar('Ticks',[]);
         hold on

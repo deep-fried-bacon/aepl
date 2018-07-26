@@ -1,4 +1,4 @@
-%% ReadCsv  -  dev
+%% ReadCsv  -  alpha
 %   take path and read in each csv
 %   return exper and condits
 %
@@ -6,21 +6,25 @@
 
 function [exper, condits] = ReadCsvAsCondits(experPath)
     global CONST
-    [COL_LAYOUT,COL_COUNT,COLS] = GetColLayout(CONST.COL_LAYOUT_VER); 
+    [COL_LAYOUT,COL_COUNT,COLS] = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER); 
      
     
     csvDir = fullfile(experPath, CONST.CSV_DIR);
     
     %exper = struct();
     %exper.
-    plateMapFile = FindFile(experPath,CONST.PLATE_MAP_SUF);
     exper = struct();
-    % could all be done in one line but it was really long
-        temp = ReadPlateMap(plateMapFile);
-        exper.conditions = tem(1);
-        exper.conditWellMap = temp(2);
-        exper.groupWellMap = temp(3);
-    %
+
+    plateMapFile = AeplUtil.FindFile(experPath,CONST.PLATE_MAP_SUF);
+    %if plateMapFile
+        % could all be done in one line but it was really long
+            temp = ReadPlateMap(plateMapFile);
+            exper.conditions = temp(1);
+            exper.conditWellMap = temp(2);
+            exper.groupWellMap = temp(3);
+        %
+        
+    %end
     
     
     clear condits
@@ -42,7 +46,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
         for w = 1:length(conditWells)
             condits(c).wells(w).name = conditWells(w);
             %condits(c).wells(w).path = strcat(exper.folder,'Xls/', exper.name,'_',condits(c).wells(w).name{1}, '.csv');
-            condits(c).wells(w).path = FindFile(csvDir,condits(c).wells(w).name);
+            condits(c).wells(w).path = AeplUtil.FindFile(csvDir,condits(c).wells(w).name);
             %if exist(condits(c).wells(w).path, 'file')
             if condits(c).wells(w).path
 
@@ -72,6 +76,8 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
         end
     end
     
+    exper.frames = length(condits(1).wells(1).cells(1).xcoords);
+
     
 
 end

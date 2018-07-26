@@ -1,6 +1,6 @@
-%%  SegIms  -  stable
+%%  SegIms  -  Epl
 %       part of Epl
-%       changes made
+%       little to no changes made
 %
 
 function MakeMovie(Fr,Name)

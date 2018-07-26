@@ -1,5 +1,5 @@
-%%  SegIms  -  stable
-%       part of Epl
+%%  SegIms  -  Epl
+%       from Epl
 %       little to no changes on my part
 %
 
