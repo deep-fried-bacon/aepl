@@ -1,16 +1,22 @@
+%%  SegIms  -  stable
+%       part of Epl
+%       little to no changes on my part
+%
+
+
 %%
 % 
 %   for x = 1:10
 %       disp(x)
 %   end
 % 
-function [cells] = segIms(im)
+function [cells] = SegIms(im)
 
 cells = cell(1,size(im,5));
 UID = 1;
 for t = 1:size(im,5)
 
-[imBW,~] = SegTexture_MSKCC(im(:,:,1,1,t));
+[imBW,~] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
 
 imBW = SplitLargeAreas(imBW);
 

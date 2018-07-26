@@ -1,3 +1,8 @@
+%%  SegIms  -  stable
+%       part of Epl
+%       changes made
+%
+
 function MakeMovie(Fr,Name)
 
 [P,F,~] = fileparts(Name);

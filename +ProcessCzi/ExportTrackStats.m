@@ -1,4 +1,4 @@
-function ExportTrackStats(Cells,Dims,Name)
+function ExportTrackStats(Cells,Dims,Name,colLayoutVer)
 
 %%
 [P,F,~] = fileparts(Name);

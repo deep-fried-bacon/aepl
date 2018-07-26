@@ -1,3 +1,9 @@
+%%  SegTexture_MSKCC  -  stable
+%       part of Epl
+%       little to no changes on my part
+%
+
+
 function [imBW,I1] = SegTexture_MSKCC(I)
 
 showPlot = false;

@@ -39,6 +39,7 @@ function RunAepl
     CONST.CZI_DIR = '';
     CONST.CSV_DIR = 'Csv';
     CONST.PROCESSED_DIR = 'ProcessedData';
+    CONST.ANNOTATED_TIF_DIR = 'TifsWithTracks';
     
     CONST.COL_LAYOUT_VER = '4 cols';
     %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
@@ -158,9 +159,13 @@ function RunAepl
     else
         options = struct();
         
-        options.experPath = '';
+        f17_06_28 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
+        f17_07_13 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-07-13 and 20170629 first plate fda screen/7.13.17 Part b/Whitney2/';
         
-        options.procCzi = 0;
+        options.experPath =  f17_07_13;
+        
+        
+        options.procCzi = 1;
         options.summar = 0;
         options.makePlots = 0;
         
@@ -171,13 +176,13 @@ function RunAepl
 %% calling code
 
     if options.procCzi 
-        MakeData.ProcessCzi.Run(options.experPath)
+        ProcessCzi.RunProcessCzi(options.experPath)
     end
     if options.summar
-        ReadData.SummarizeData.Run(options.experPath)
+        SummarizeData.RunSummarizeData(options.experPath)
     end
     if options.makePlots
-        ReadData.MakePlots.Run(options.experPath)
+        PlotData.RunPlotData(options.experPath)
     end
                     
                     
