@@ -1,10 +1,12 @@
-%% ReadPlateMap  -  beta
+%% ReadPlateMap  -  beta / almost stable
 %   takes path of plate map
 %   reads it in and
 %   returns conditWellMap
 %       map of 
 %       conditions (str) -> wells (str[])
 %
+
+% need to prevent groups from being added to condition names
 
 
 

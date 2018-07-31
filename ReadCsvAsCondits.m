@@ -1,7 +1,25 @@
-%% ReadCsv  -  alpha
+%% ReadCsv  -  alpha / beta
 %   take path and read in each csv
 %   return exper and condits
 %
+%       exper
+%           conditions
+%           conditWellMap
+%           groupWellMap
+%           conditIndexMap
+%           frames
+%
+%       condits
+%           name
+%           wells
+%               name
+%               path (csv)
+%               raw
+%               cellCount
+%               cells
+%                   <COLS>
+%
+
 
 
 function [exper, condits] = ReadCsvAsCondits(experPath)
@@ -11,8 +29,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
     
     csvDir = fullfile(experPath, CONST.CSV_DIR);
     
-    %exper = struct();
-    %exper.
+   
     exper = struct();
     disp(experPath)
     disp(CONST.PLATE_MAP_SUF)
@@ -23,16 +40,16 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
             exper.conditions = a;
             exper.conditWellMap = b;
             exper.groupWellMap = c;
-        %
         
     %end
     
     
-    clear condits
+    clear condits       % is this necessary?
+    % use conditWellMap and conditIndexMap to allow condition names to not
+    % be valid matlab identifiers
+    %       I do this by returning from ReadPlateMap, an
     exper.conditIndexMap = containers.Map();
-    %condits(size(exper.conditions,2)) = struct();
     condits(length(exper.conditions)) = struct();
-    %for c = 1:size(exper.conditions,2)
     for c = 1:length(exper.conditions)
         condits(c).name = exper.conditions{c};  
         exper.conditIndexMap(exper.conditions{c}) = c; 
@@ -43,7 +60,6 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
         conditWells = exper.conditWellMap(exper.conditions{c});
         condits(c).wells(size(conditWells)) = struct();
 
-        %for w = 1:size(conditWells,2)
         for w = 1:length(conditWells)
             condits(c).wells(w).name = conditWells(w);
             %condits(c).wells(w).path = strcat(exper.folder,'Xls/', exper.name,'_',condits(c).wells(w).name{1}, '.csv');
@@ -51,12 +67,20 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
             %if exist(condits(c).wells(w).path, 'file')
             if condits(c).wells(w).path
 
-                condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
-
-                condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
-
-                condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
                 
+                    
+%                 condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
+%                     
+%                 condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
+% 
+%                 condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
+
+                %% Read in csv file
+                condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
+                condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
+                condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
+                
+                %% Intialize struct array for cells
                 condits(c).wells(w).cells(condits(c).wells(w).cellCount) = struct();
 
                 for j = 1:condits(c).wells(w).cellCount
@@ -77,6 +101,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
         end
     end
     
+    % let's make this frameCount
     exper.frames = length(condits(1).wells(1).cells(1).xcoords);
 
     

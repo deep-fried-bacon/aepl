@@ -1,4 +1,4 @@
-%% PlotData  -  alpha
+%% RunPlotData  -  beta
 %   wrapper function for calling the heavy-lifters that make plots
 %
 %   assumes plate map has groups

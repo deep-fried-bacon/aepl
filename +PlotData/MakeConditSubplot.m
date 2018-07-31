@@ -1,12 +1,10 @@
-%% MakeConditSubplot  -  dev
+%% MakeConditSubplot  -  beta
 %       MakeConditionSubplot
 %   given a condition gather data and graph
 %
 % 
 
 
-% function MakeConditSubplot(condit)
-% function plottyPlot(mat,exper)
 function MakeConditSubplot(mat,exper)
     hold on
     
@@ -20,9 +18,10 @@ function MakeConditSubplot(mat,exper)
     
     ylim([0 exper.ylimit])
     
-    xlabel('time (hours)') % x-axis label
-    ylabel('displacement (pixels)') % y-axis label
+    xlabel('time (hours)')              % x-axis label
+    ylabel('displacement (pixels)')     % y-axis label
     legend('mean','median')
+    
     %l = legend('mean','median');
     %l.Location = 'northeastoutside';
 end
