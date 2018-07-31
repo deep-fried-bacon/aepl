@@ -3,7 +3,8 @@
 %   I've made a fair amount of changes
 %
 
-function DrawTracks(im,Segs,fName)
+function DrawTracks2(im,Segs,fName)
+fprintf(1,'\tDrawing tracks and saving to tif 2\n')
 ugh = 0;
 
 
@@ -22,19 +23,23 @@ Tracks = unique(AllTracks);
 
 Fr = cell(1,size(im,3));
 
-for i = 1:size(im,3)
-    
-    Tsegs = AllSegs([AllSegs.time]==i);
-    % put break on next line to step through outlined cells
-    TTracks = [Tsegs.Tid];
-    
-    imagesc(im(:,:,i))
+
+imagesc(im(:,:,1))
     colormap gray
     Axis = gca;
     Axis.Position = [0 ,0, 1, 1];
     axis equal
     axis off
     hold on
+    
+    
+for i = 1:10:size(im,3)
+    
+    Tsegs = AllSegs([AllSegs.time]==i);
+    % put break on next line to step through outlined cells
+    TTracks = [Tsegs.Tid];
+    
+    
     for ii = 1:length(TTracks)
         
         pts = vertcat(Tsegs(ii).Bound);
@@ -49,7 +54,9 @@ for i = 1:size(im,3)
     
     
     %fName = 
-    if saveframe
+  
+end
+  if saveframe
         %Fr{i} = getframe(gca);
         tempGca = getframe(gca);
         if ugh == 0
@@ -59,7 +66,5 @@ for i = 1:size(im,3)
             imwrite(tempGca.cdata,fName,'WriteMode','append') 
         end
     end
-end
-
 %MakeMovie(Fr,Name)
 end

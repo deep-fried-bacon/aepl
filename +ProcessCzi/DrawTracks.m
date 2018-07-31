@@ -4,11 +4,10 @@
 %
 
 function DrawTracks(im,Segs,fName)
-ugh = 0;
+fprintf(1,'\tDrawing tracks and saving to tif\n')
+fprintf(1,'\t\tframe 1')
 
-
-close all, 
-figure, 
+firstRound = 0;
 
 cmap = colormap('jet');
 cmap = cmap(randperm(size(cmap,1)),:);
@@ -16,29 +15,30 @@ cmap = cmap(randperm(size(cmap,1)),:);
 saveframe  = 1;
 AllSegs = vertcat(Segs{:});
 
-AllTracks = [AllSegs.Tid];
-Tracks = unique(AllTracks);
+% AllTracks = [AllSegs.Tid];
+% Tracks = unique(AllTracks);
 % counts = hist(AllTracks,Tracks);
 
-Fr = cell(1,size(im,3));
+% Fr = cell(1,size(im,3));
+%h = figure('Visible', 'off');
+h = figure();
+for i = 1:size(im,3)
+    clf(h,'reset')
+    %set(h, 'Visible', 'off')
+    %h = figure('Visible', 'off');
+    %h = figure();
 
-
-imagesc(im(:,:,1))
+    Tsegs = AllSegs([AllSegs.time]==i);
+    % put break on next line to step through outlined cells
+    TTracks = [Tsegs.Tid];
+    
+    imagesc(im(:,:,i))
     colormap gray
     Axis = gca;
     Axis.Position = [0 ,0, 1, 1];
     axis equal
     axis off
     hold on
-    
-    
-for i = 1:10:size(im,3)
-    
-    Tsegs = AllSegs([AllSegs.time]==i);
-    % put break on next line to step through outlined cells
-    TTracks = [Tsegs.Tid];
-    
-    
     for ii = 1:length(TTracks)
         
         pts = vertcat(Tsegs(ii).Bound);
@@ -52,18 +52,23 @@ for i = 1:10:size(im,3)
     drawnow
     
     
-    %fName = 
-  
-end
-  if saveframe
-        %Fr{i} = getframe(gca);
-        tempGca = getframe(gca);
-        if ugh == 0
+    if saveframe
+        tempGca = getframe(h);
+        if firstRound == 0
             imwrite(tempGca.cdata,fName)
-            ugh = 1;
+            firstRound = 1;
         else
             imwrite(tempGca.cdata,fName,'WriteMode','append') 
         end
     end
-%MakeMovie(Fr,Name)
+    for j = 1:log10(i) + 1
+        fprintf(1,'\b')
+    end
+    fprintf(1,num2str(i+1))
+
+    %close(h)
+end
+fprintf(1,'\n')
+close(h)
+
 end

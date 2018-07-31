@@ -17,6 +17,7 @@ function laeout = MakeLaeout(plotCount)
         if n > 0 
             colCount = colCount + ceil(n/rowCount);
         end
-        laeout = [rowCount colCount];
+        %laeout = [rowCount colCount];
+        laeout = [colCount,rowCount];
     end
 end

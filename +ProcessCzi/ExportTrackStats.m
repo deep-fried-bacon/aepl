@@ -5,6 +5,7 @@
 
 
 function ExportTrackStats(Cells,Dims,filePath)
+    fprintf(1,'\tMaking csv files\n')
 
     %%
 %     [P,F,~] = fileparts(Name);
@@ -23,8 +24,8 @@ function ExportTrackStats(Cells,Dims,filePath)
     Tracks = Tracks(counts>20);
 
     %%
-    %colCount = 5;
-    colCount = 4;
+    colCount = 5;
+    %colCount = 4;
 
     Mat = cell(length(Cells)+colCount,colCount*max(length(Tracks),1));
 
@@ -37,7 +38,7 @@ function ExportTrackStats(Cells,Dims,filePath)
     Mat(4,2:colCount:end) = {'y(Pixel Position)'};
     Mat(4,3:colCount:end) = {'Area(pixels.^2)'};
     Mat(4,4:colCount:end) = {'Covariance'};
-    %Mat(4,5:colCount:end) = {'Pixels/Frame'};
+    Mat(4,5:colCount:end) = {'Pixels/Frame'};
 
     % imd = CONSTANTS.imageData;
     % ResolutionXYZ = imd.PixelPhysicalSize;
@@ -92,7 +93,7 @@ function ExportTrackStats(Cells,Dims,filePath)
             Mat(Times+4,((i-1)*colCount+1):((i-1)*colCount+2)) = num2cell(HullPos(:,[1,2]));
             Mat(Times+4,(i-1)*colCount+3) = num2cell(Areas);
             Mat(Times+4,(i-1)*colCount+4) = num2cell(HullCov);
-            %Mat(Times+4,(i-1)*colCount+5) = num2cell(Veloc);
+            Mat(Times+4,(i-1)*colCount+5) = num2cell(Veloc);
 
         catch e
 

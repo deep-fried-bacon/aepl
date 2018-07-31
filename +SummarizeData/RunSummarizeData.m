@@ -12,7 +12,7 @@ function RunSummarizeData(experPath)
     
 
     global CONST
-    procDir = fullfile(exper.folder, CONST.PROCESSED_DIR);
+    procDir = fullfile(experPath, CONST.PROCESSED_DIR);
     if ~exist(procDir,'dir')
         mkdir(procDir)
     end  
@@ -37,34 +37,35 @@ function RunSummarizeData(experPath)
     wmCol = 1;
     
         
-    conditAvgC{1,cCol} = 'Time (hours)';
-    conditAvgC(2:exper.frames,cCol) = t_int;
+    conditAvgC{1,caCol} = 'Time (hours)';
+    conditAvgC(2:exper.frames,caCol) = t_int;
     caCol = caCol + 1;
     
-    conditMediC{1,cCol} = 'Time (hours)';
-    conditMediC(2:exper.frames,cCol) = t_int;
+    conditMediC{1,cmCol} = 'Time (hours)';
+    conditMediC(2:exper.frames,cmCol) = t_int;
     cmCol = cmCol + 1;
     
     
-    wellAvgC{1,wCol} = 'Time (hours)';
-    wellAvgC(2:exper.frames,wCol) = t_int;
+    wellAvgC{1,waCol} = 'Time (hours)';
+    wellAvgC(2:exper.frames,waCol) = t_int;
     wCaol = waCol + 1;
     
-    wellMediC{1,wCol} = 'Time (hours)';
-    wellMediC(2:exper.frames,wCol) = t_int;
+    wellMediC{1,wmCol} = 'Time (hours)';
+    wellMediC(2:exper.frames,wmCol) = t_int;
     wmCol = wmCol + 1;
     
     
     for condit = condits
         
-        if ~isfield(condit,mat) 
-            condit.mat = AeplUtil.MakeConditMat(condit);
-        end
-        
+        %if ~isfield(condit,mat) 
+        condit  = AeplUtil.MakeConditMat(condit);
+        %end
+       
         conditAvg = nanmean(condit.mat,2);
         conditAvgC{1,caCol} = condit.name;
         conditAvgC(2:length(conditAvg)+1, caCol) = num2cell(conditAvg);
         caCol = caCol + 1;
+        
         
         conditMedi = nanmedian(condit.mat,2);
         conditMediC{1,cmCol} = condit.name;

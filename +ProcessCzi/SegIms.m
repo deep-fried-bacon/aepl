@@ -4,35 +4,31 @@
 %
 
 
-%%
-% 
-%   for x = 1:10
-%       disp(x)
-%   end
-% 
+
 function [cells] = SegIms(im)
+    fprintf(1,'\tSegmenting Images\n')
 
-cells = cell(1,size(im,5));
-UID = 1;
-for t = 1:size(im,5)
+    cells = cell(1,size(im,5));
+    UID = 1;
+    for t = 1:size(im,5)
 
-[imBW,~] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
+        [imBW,~] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
 
-imBW = SplitLargeAreas(imBW);
+        imBW = SplitLargeAreas(imBW);
 
-[B] = bwboundaries(imBW,'noholes');
+        [B] = bwboundaries(imBW,'noholes');
 
- CC = regionprops(imBW,'centroid','area','PixelList');
-    for ii = 1:length(CC)
-        CC(ii).id = UID;
-        CC(ii).Tid = UID;
-        CC(ii).time = t;
-        CC(ii).Bound = B{ii};
-        UID = UID +1;
-    end
+        CC = regionprops(imBW,'centroid','area','PixelList');
+        for ii = 1:length(CC)
+            CC(ii).id = UID;
+            CC(ii).Tid = UID;
+            CC(ii).time = t;
+            CC(ii).Bound = B{ii};
+            UID = UID +1;
+        end
 
-cells{t} = CC;
-end 
+        cells{t} = CC;
+    end 
 end 
 
 
@@ -40,14 +36,14 @@ end
 %% 
 function imBWout = SplitLargeAreas(imBW)
 
-imBWout = imBW;
+    imBWout = imBW;
 
-tooLarge = bwareaopen(imBW, 6000);
-imBWout(tooLarge) = false;
+    tooLarge = bwareaopen(imBW, 6000);
+    imBWout(tooLarge) = false;
 
-L = SeparateObjects(tooLarge,3500);
+    L = SeparateObjects(tooLarge,3500);
 
-imBWout(L>0) = true;
+    imBWout(L>0) = true;
 end
 
 function L2 = SeparateObjects(imBW,MeanArea)
@@ -68,7 +64,12 @@ for i = 1:max(L(:))
         LMat(:,:,:,Lmax) = L2==Lmax;
         Lmax = Lmax + 1;
     else
-        T = kmeans(CellFeats(i).PixelList,k);
+        try
+            T = kmeans(CellFeats(i).PixelList,k);
+        catch e
+            fprintf(2,'kmeans error, I dont know whats causing it')
+            fprintf(2,"exception: " + getReport(e)+"\n")
+        end
         for j = 1:max(T(:))
             L2(CellFeats(i).PixelIdxList(T==j))=Lmax ;
             LMat(:,:,:,Lmax) = L2==Lmax;

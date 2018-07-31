@@ -1,4 +1,4 @@
-
+ 
 %% RunAepl  -  beta 
 % two parts - options code and calling code
 %     options code   (beta)
@@ -17,7 +17,7 @@
 %         based on options calls the appropriate functions
 % 
 % calling code - calls the heavy-lifting code
-% options code - sets path and which functions to run,
+% options code - sets path and 2which functions to run,
 %     consists of a gui or hard coded for development
 % gui -> beta, close to stable
 % calling code -> dev
@@ -44,7 +44,8 @@ function RunAepl
     CONST.PROCESSED_DIR = 'ProcessedData';
     CONST.ANNOTATED_TIF_DIR = 'TifsWithTracks';
     
-    CONST.COL_LAYOUT_VER = '4 cols';
+    %CONST.COL_LAYOUT_VER = '4 cols';
+    CONST.COL_LAYOUT_VER = '5 cols';
     %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
     
     
@@ -165,12 +166,14 @@ function RunAepl
         f17_06_28 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
         f17_07_13 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-07-13 and 20170629 first plate fda screen/7.13.17 Part b/Whitney2/';
         f18_06_20 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
-        options.experPath =  f18_06_20;
+        f18_03_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/2018-3-18';
+        
+        options.experPath =  f18_03_18;
         
         
         options.procCzi = 0;
-        options.summar = 1;
-        options.makePlots = 0;
+        options.summar = 0;
+        options.makePlots = 1;
         
         
     end

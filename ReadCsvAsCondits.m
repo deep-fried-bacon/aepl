@@ -18,10 +18,10 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
     plateMapFile = AeplUtil.FindFile(experPath,CONST.PLATE_MAP_SUF);
     %if plateMapFile
         % could all be done in one line but it was really long
-            temp = ReadPlateMap(plateMapFile);
-            exper.conditions = temp(1);
-            exper.conditWellMap = temp(2);
-            exper.groupWellMap = temp(3);
+            [a,b,c] = ReadPlateMap(plateMapFile);
+            exper.conditions = a;
+            exper.conditWellMap = b;
+            exper.groupWellMap = c;
         %
         
     %end
@@ -55,7 +55,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
                 condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
 
                 condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
-
+                
                 condits(c).wells(w).cells(condits(c).wells(w).cellCount) = struct();
 
                 for j = 1:condits(c).wells(w).cellCount

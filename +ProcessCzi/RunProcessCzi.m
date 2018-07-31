@@ -1,4 +1,4 @@
-%% ProcessCzi  -  alpha
+%% ProcessCzi  -  beta
 %     wrapper function that calls the heavy lifters for processing czi
 %
 %   Does not require plate map
@@ -38,35 +38,50 @@ function RunProcessCzi(experPath)
             %disp(class(temp(1)))
             temp = strsplit(temp{1},'-');
 
-            wellName = temp{end}
+            wellName = temp{end};
 
 
-            wellTifSavePath = fullfile(tifSaveDir,strcat(wellName,'_.tif'));
+            wellTifSavePath = fullfile(tifSaveDir,strcat(wellName,'.tif'));
+            %wellTifSavePath2 = fullfile(tifSaveDir,strcat(wellName,'_.tif'));
+
             wellCsvSavePath = fullfile(csvSaveDir,strcat(wellName,'.csv'));
             
             if ~exist(wellCsvSavePath,'file')
+                disp(['Starting well ',wellName]);
 
 
-
+                tic
                 [im,imd] =  MicroscopeData.Original.ReadData(experPath,wellFile);
-
+                fprintf(1,'\t\t')
+                toc
+               
                 imdim = size(im);
         %         if exper.frameCount == 0 
         %             exper.frameCount = imdim(5);
         %         end
-
+                tic
                 [cells] = ProcessCzi.SegIms(im);
+                fprintf(1,'\t\t')
+                toc
 
-
+                tic
                 [cells2,edges] = ProcessCzi.GetTracks(cells,imdim);
+                fprintf(1,'\t\t')
+                toc
 
 
 
 
+                tic
+                ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
+                fprintf(1,'\t\t')
+                toc
+                %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
 
-                ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath);
-
+                tic
                 ProcessCzi.ExportTrackStats(cells2,imdim,wellCsvSavePath)
+                fprintf(1,'\t\t')
+                toc
 
         %         allSegs = vertcat(cells2{:});
         %         allTracks = [allSegs.Tid];
@@ -76,7 +91,8 @@ function RunProcessCzi(experPath)
         %         velocs = cell(exper.frameCount,size(tracks,2));
 
                 %ShowPlot(well.cells2,well.name,well.condition,exper.figureHandles)
-            
+            else
+                disp(['Skipping well ', wellName, ', csv file already exists']);
             end
             
             

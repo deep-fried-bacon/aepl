@@ -27,7 +27,7 @@ function RunPlotData(experPath)
     %SUB_DIR = 'pdfPlots';
     %PLOT_SUF = '-plot.pdf';
 
-    procDir = fullfile(exper.folder, CONST.PROCESSED_DIR);
+    procDir = fullfile(experPath, CONST.PROCESSED_DIR);
     if ~exist(procDir,'dir')
         mkdir(procDir)
     end    
@@ -36,7 +36,7 @@ function RunPlotData(experPath)
 
     exper.ylimit = 20;
     
-    groups = exper.groupWellMap.keys();
+    groups = exper.groupWellMap.keys()
    
     condits2(length(condits)) = struct('name','','wells',[],'mat',[]);
 

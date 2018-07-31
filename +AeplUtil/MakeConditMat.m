@@ -12,6 +12,12 @@ function condit = MakeConditMat(condit)
     col = 1;
     for w = 1:length(condit.wells)
         try 
+            %disp(w)
+            if isempty(condit.wells(w).cells)
+                continue
+            end
+                
+            
             frames = length(condit.wells(w).cells(1).distance(2:end));
 
             condit.wells(w).mat = [];

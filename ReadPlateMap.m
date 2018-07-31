@@ -10,6 +10,7 @@
 
 function [conditions,conditWellMap, groupConditMap] = ReadPlateMap(plateMapFile)
 
+    disp(plateMapFile)
     ttable = readtable(plateMapFile,'Delimiter',',','ReadVariableNames',false);
 
     startRowIndices = find(strcmp(ttable{:,1}, 'B'));
@@ -66,10 +67,10 @@ function [conditions,conditWellMap, groupConditMap] = ReadPlateMap(plateMapFile)
             end
             if ~any(cellfun(@isempty,temp))     %if no elements of temp are empty
                 temp2 = strjoin(temp,', ');
-                wellConditMap(strcat(abc(r+1),oneTwoThree{col-1})) = temp2;
+                wellConditMap(strcat(abc(r+1),oneTwoThreeB{col-1})) = temp2;
 
                 if groupIndex
-                    wellGroupMap(strcat(abc(r+1),oneTwoThree{col-1})) = ttable{groupIndex+r,col}{1};
+                    wellGroupMap(strcat(abc(r+1),oneTwoThreeB{col-1})) = ttable{groupIndex+r,col}{1};
                 end
             end
         end

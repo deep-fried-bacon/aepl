@@ -5,6 +5,7 @@
 
 
 function [Segs,Edges] = GetTracks(Segs,dims)
+fprintf(1,'\tGetting Tracks from segmentation\n')
 
     Edges = cell(1,length(Segs));
 
