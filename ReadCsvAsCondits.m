@@ -14,7 +14,8 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
     %exper = struct();
     %exper.
     exper = struct();
-
+    disp(experPath)
+    disp(CONST.PLATE_MAP_SUF)
     plateMapFile = AeplUtil.FindFile(experPath,CONST.PLATE_MAP_SUF);
     %if plateMapFile
         % could all be done in one line but it was really long
