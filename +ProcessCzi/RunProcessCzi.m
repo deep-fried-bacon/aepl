@@ -10,7 +10,9 @@ function RunProcessCzi(experPath)
 
     %% Add MATLAB Utilities for BioFormats 
     addpath('./Utilities/src/MATLAB')
-
+    if ~exist('experPath','var')
+        experPath = uigetdir();
+    end
 
     global CONST
     
@@ -80,7 +82,7 @@ function RunProcessCzi(experPath)
                 %       doesn't take the image itself)
                 
                 tic
-                [cells2,edges] = ProcessCzi.GetTracks(cells,imdim);
+                [cells2,edges] = ProcessCzi.getTracks(cells,imdim);
                 fprintf(1,'\t\t')
                 toc
 
@@ -88,7 +90,7 @@ function RunProcessCzi(experPath)
                 %% Create the annotated tifs
                 %   important for manual validation and checking
                 %   takes about 20 sec per well
-                %   wells take about 40 sec total
+                %   wells take about 40 sec total 
                 
 
                 tic
