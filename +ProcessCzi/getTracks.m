@@ -23,6 +23,7 @@ fprintf(1,'\tGetting Tracks from segmentation\n')
 
             T0 = Segs{t};
             Trange = t+1:min(t+5,length(Segs));
+            %Trange = t+1:min(t+7,length(Segs));
 
             T1 = vertcat(Segs{Trange});
 
@@ -89,7 +90,8 @@ function EdgeList = MakeEdgeT(T0,T1,Tracks,dims)
             C2 = T1(j);
 
             dist =  sqrt(sum((C1.Centroid-C2.Centroid).^2,2));
-            maxDist = 500;
+            %maxDist = 500;
+            maxDist = 50;
 
             if dist>maxDist
                 continue;

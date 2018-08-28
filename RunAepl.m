@@ -26,6 +26,25 @@
 
 function RunAepl
 %% options code
+
+    %% callback functions for gui
+
+    function dirDialog_Callback(hObject,eventdata, handles) 
+        pathBox.String = uigetdir();
+    end
+
+    function runButt_Callback(hObject,eventdata, handles) 
+        temp = struct();
+        temp.experPath = pathBox.String;
+        temp.procCzi = procCzi.Value;
+        temp.summar = summar.Value;
+        temp.makePlots = makePlots.Value;
+
+        guidata(f,temp)
+        uiresume()
+        close gcf   %untested
+    end
+
     global CONST
     CONST = struct();
     
@@ -48,38 +67,46 @@ function RunAepl
     CONST.COL_LAYOUT_VER = '5 cols';
     %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
     
+    CONST.SET_LAEOUT = [2, 3];    % [rows, columns
     
     
-    %% callback functions for gui
-
-    function dirDialog_Callback(hObject,eventdata, handles) 
-        pathBox.String = uigetdir();
-    end
-
-    function runButt_Callback(hObject,eventdata, handles) 
-        temp = struct();
-        temp.experPath = pathBox.String;
-        temp.procCzi = procCzi.Value;
-        temp.summar = summar.Value;
-        temp.makePlots = makePlots.Value;
-
-        guidata(f,temp)
-        uiresume()
-    end
     
     dev = true;
+    %dev = false;
 
-    if ~dev
+    if dev
+        options = struct();
+        
+        f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
+        f17_06_28 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
+        f17_07_13 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-07-13 and 20170629 first plate fda screen/7.13.17 Part b/Whitney2/';
+        f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
+        f18_03_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/2018-3-18';
+        f18_08_02 = '/Volumes/baylieslab/Current Lab Members/Whitney/Whitney  8-2';
+        f18_08_02t = '/Volumes/baylieslab/Current Lab Members/Whitney/Whitney  8-2/tempBwells';
+        
+        options.experPath =  f18_08_02;
+        
+        
+        options.procCzi = 0;
+        options.summar = 1;
+        
+        options.makePlots = 1;
+        plotOptions = PlotData.PlotOptions();
+%         plotOptions.laeoutByGroup.make = 1;
+%         plotOptions.laeoutByOneGroup.make = 1;
+%         plotOptions.laeoutSet.make = 1;
+        
+       
+    
+    else
 
     %% gui
-    
-        
-
 
     %% define some constants for layout
 
-        fw = 500;       % figure width
-        fh = 250;       % figure height
+        %fw = 500;       % figure width
+        %fh = 250;       % figure height
 
         lineH = 30;     % line height
 
@@ -92,7 +119,9 @@ function RunAepl
         %set(0,'DefaultFigureWindowStyle','docked')
         f = figure();
 
-
+        pos = get(f, 'Position'); %// gives x left, y bottom, width, height
+        fw = pos(3);
+        fh = pos(4);
     %% make each uicontrol
     %   path button + path text edit box
     %   3 checkboxes
@@ -135,6 +164,7 @@ function RunAepl
             'FontSize',14,...
             'HandleVisibility','off'...
         );
+            
 
         r = r + 1;
         makePlots = uicontrol(...
@@ -145,6 +175,37 @@ function RunAepl
             'HandleVisibility','off'...
         );
 
+            plotOptions = PlotData.PlotOptions();
+%             r = r + 1;
+%             laeoutByGroup = uicontrol(...
+%                 'Style','checkbox',...
+%                 'String','rows and columns calculated',...
+%                 'Position',[padding*2, fh - r*(lineH + padding), fw-2*(padding), lineH],...
+%                 'FontSize',14,...
+%                 'HandleVisibility','off'...
+%             ); 
+%         
+%             r = r + 1;
+%             laeoutByOneGroup = uicontrol(...
+%                 'Style','checkbox',...
+%                 'String','create plots',...
+%                 'Position',[padding*2, fh - r*(lineH + padding), fw-2*(padding), lineH],...
+%                 'FontSize',14,...
+%                 'HandleVisibility','off'...
+%             ); 
+%         
+%             r = r + 1;
+%             laeoutSet = uicontrol(...
+%                 'Style','checkbox',...
+%                 'String','create plots',...
+%                 'Position',[padding*2, fh - r*(lineH + padding), fw-2*(padding), lineH],...
+%                 'FontSize',14,...
+%                 'HandleVisibility','off'...
+%             );
+%     
+    
+    
+    
 
         r = r + 1;
         runButt = uicontrol(...
@@ -160,20 +221,8 @@ function RunAepl
         
         options = guidata(f);
     
-    else
-        options = struct();
+    
         
-        f17_06_28 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
-        f17_07_13 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-07-13 and 20170629 first plate fda screen/7.13.17 Part b/Whitney2/';
-        f18_06_20 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
-        f18_03_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/2018-3-18';
-        
-        options.experPath =  f18_03_18;
-        
-        
-        options.procCzi = 0;
-        options.summar = 0;
-        options.makePlots = 1;
         
         
     end
@@ -182,13 +231,22 @@ function RunAepl
 %% calling code
 
     if options.procCzi 
+        tic
         ProcessCzi.RunProcessCzi(options.experPath)
+        disp('ProcessCzi')
+        toc
     end
     if options.summar
+        tic
         SummarizeData.RunSummarizeData(options.experPath)
+        disp('SummarizeData')
+        toc
     end
     if options.makePlots
-        PlotData.RunPlotData(options.experPath)
+        tic
+        PlotData.RunPlotData(options.experPath,plotOptions)
+        disp('PlotData')
+        toc
     end
                     
                     

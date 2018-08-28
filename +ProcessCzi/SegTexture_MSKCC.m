@@ -6,7 +6,7 @@
 
 function [imBW,I1] = SegTexture_MSKCC(I)
 
-showPlot = false;
+showPlot = true;
 
 if isempty(I)
     return 

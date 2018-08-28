@@ -5,27 +5,14 @@
 %
 
 
-function RunPlotData(experPath)
-    global CONST
-    
-%     csvDir = fullfile(experPath, CONST.CSV_DIR);
-%     
-%     %exper = struct();
-%     %exper.
-%     plateMapFile = AeplUitl.FindFile(experPath,CONST.PLATE_MAP_SUF);
-%     
-%     % could all be done in one line but it was really long
-%         temp = ReadPlateMap(plateMapFile);
-%         exper.conditions = tem(1);
-%         exper.conditWellMap = temp(2);
-%         exper.groupWellMap = temp(3);
-    %
-    [exper,condits] = ReadCsvAsCondits(experPath);
+function RunPlotData(experPath,plotOptions)
     
 
-    %function [exper,condits2] = plotCondits(exper,condits)
-    %SUB_DIR = 'pdfPlots';
-    %PLOT_SUF = '-plot.pdf';
+    global CONST
+    
+
+    [exper,condits] = ReadCsvAsCondits(experPath);
+    
 
     procDir = fullfile(experPath, CONST.PROCESSED_DIR);
     if ~exist(procDir,'dir')
@@ -36,15 +23,27 @@ function RunPlotData(experPath)
 
     exper.ylimit = 20;
     
-    groups = exper.groupWellMap.keys()
+    groups = exper.groupWellMap.keys();
    
     condits2(length(condits)) = struct('name','','wells',[],'mat',[]);
 
+    
+    if plotOptions.laeoutSet.make 
+        laeout = CONST.SET_LAEOUT;
+        count = 0;
+    % elseif plotOptions.laeoutByOneGroup
+        % need to add
+    end
+    
     for group = groups
+        if plotOptions.laeoutSet.make 
+            count = 0;
         gCondits = exper.groupWellMap(group{1});
-        plotCount = length(gCondits);
-        %laeout = makeLaeout(plotCount);
-        laeout = AeplUtil.MakeLaeout(plotCount);
+        
+        if plotOptions.laeoutByGroup.make
+            plotCount = length(gCondits);
+            laeout = AeplUtil.MakeLaeout(plotCount);
+        end
         
         figure
         plotNum = 1;
@@ -52,7 +51,6 @@ function RunPlotData(experPath)
             conditName = conditNamee{1};
             cond = exper.conditIndexMap(conditName);
 %              try
-               %temp  = makeConditMat(condits(cond));
                temp = AeplUtil.MakeConditMat(condits(cond));
                condits2(cond)= temp;
 %             catch e
@@ -62,20 +60,50 @@ function RunPlotData(experPath)
             subplot(laeout(1),laeout(2), plotNum)
             title(conditName)
             
-            %plottyPlot(condits2(cond).mat,exper);
             PlotData.MakeConditSubplot(condits2(cond).mat,exper)
             plotNum = plotNum + 1;
+            
+            if plotOptions.laeoutSet.make 
+                if plotNum > laeout(1)*laeout(2)
+                    h = gcf;
+
+                    set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
+
+                    fname = [group{1},'_',num2str(count),CONST.PLOT_SUF];
+                    print(h,fullfile(procDir,fname),'-dpdf')
+                    close(h)
+                  
+                    figure
+                    count = count+1;
+                    plotNum = 1;
+                end
+            end
         end
-        h = gcf;
-%         set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
-%         
-%         
-%         fname = [exper.name,'_',group{1},PLOT_SUF];
-%         
-        fname = [group{1},CONST.PLOT_SUF];
+            if plotOptions.laeoutSet.make 
+               if plotNum > 1
+                    h = gcf;
+
+                    set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
+
+                    fname = [group{1},CONST.PLOT_SUF];
+
+                    print(h,fullfile(procDir,fname),'-dpdf')
+                    close(h)
+               else
+                   close(gcf)
+               end
+            else
+                h = gcf;
+
+                set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
+   
+                fname = [group{1},CONST.PLOT_SUF];
+
+                print(h,fullfile(procDir,fname),'-dpdf')
+                close(h)
+                
+            end
         
-        print(h,fullfile(procDir,fname),'-dpdf')
-%         close(h)
     end
     %condits = condits2;
 end

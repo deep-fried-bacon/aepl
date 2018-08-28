@@ -72,21 +72,21 @@ function RunSummarizeData(experPath)
         conditMediC(2:length(conditMedi)+1, cmCol) = num2cell(conditMedi);
         cmCol = cmCol + 1;
         
-        for w = 1:length(condit.wells)
-            wellAvg = nanmean(condit.wells(w).mat,2);
-            wellAvgC{1,waCol} = condit.wells(w).name;
-            if ~isempty(wellAvg)
-                wellAvgC(2:length(wellAvg)+1, waCol) = num2cell(wellAvg);
-            end
-            waCol = waCol + 1;
-            
-            wellMedi = nanmean(condit.wells(w).mat,2);
-            wellMediC{1,wmCol} = condit.wells(w).name;
-            if ~isempty(wellMedi)
-                wellMediC(2:length(wellMedi)+1, wmCol) = num2cell(wellMedi);
-            end
-            wmCol = wmCol + 1;
-        end
+%         for w = 1:length(condit.wells)
+%             wellAvg = nanmean(condit.wells(w).mat,2);
+%             wellAvgC{1,waCol} = condit.wells(w).name;
+%             if ~isempty(wellAvg)
+%                 wellAvgC(2:length(wellAvg)+1, waCol) = num2cell(wellAvg);
+%             end
+%             waCol = waCol + 1;
+%             
+%             wellMedi = nanmean(condit.wells(w).mat,2);
+%             wellMediC{1,wmCol} = condit.wells(w).name;
+%             if ~isempty(wellMedi)
+%                 wellMediC(2:length(wellMedi)+1, wmCol) = num2cell(wellMedi);
+%             end
+%             wmCol = wmCol + 1;
+%         end
     end
     
     

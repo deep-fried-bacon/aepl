@@ -5,25 +5,19 @@
 
 
 
-function fullpath = FindFile(folder, pattern)
-   
-
+function fullpath = LookForFile(folder, pattern)
+    
     contents = dir(folder);
+    
     for i = 1:length(contents)
         if contains(contents(i).name,pattern)
            fullpath = fullfile(folder,contents(i).name);
            return
         end
     end
-    try 
-        error('Could not find file:\n\tfolder = %s\n\tpattern = %s',folder,pattern)
+        
 
-    catch e
-        disp(folder)
-        disp(pattern)
-        error(e.getReport())
-
-    end
+    fullpath = false; 
     
     
 end
