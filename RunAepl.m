@@ -89,7 +89,7 @@ function RunAepl
         
         
         options.procCzi = 0;
-        options.summar = 1;
+        options.summar = 0;
         
         options.makePlots = 1;
         plotOptions = PlotData.PlotOptions();
@@ -244,7 +244,8 @@ function RunAepl
     end
     if options.makePlots
         tic
-        PlotData.RunPlotData(options.experPath,plotOptions)
+        %PlotData.RunPlotData(options.experPath,plotOptions)
+        PlotData.RunPlotData4(options.experPath)
         disp('PlotData')
         toc
     end
