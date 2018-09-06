@@ -17,12 +17,24 @@ function [conditions,conditWellMap, groupConditMap] = ReadPlateMap(plateMapFile)
 
     startRowIndices = find(strcmp(ttable{:,1}, 'B'));
 
-    groupIndex = find(strcmp(ttable{:,1},'Groups')) + 2;
-    if ~isempty(groupIndex) 
-        startRowIndices(find(startRowIndices(:) == groupIndex)) = [];
+    groupIndexTemp = find(strcmp(ttable{:,1},'Groups'));% + 2;
+    if ~isempty(groupIndexTemp) 
+        %disp(StartRowIndices
+        %startRowIndices(find(groupIndex - 5 <= startRowIndices(:) <= groupIndex + 5)) = [];
+        groupIndex = startRowIndices((startRowIndices(:) <= groupIndexTemp + 5) & (startRowIndices(:) >= groupIndexTemp));
+        if length(groupIndex) == 1
+        
+        %temp = (startRowIndices <= groupIndexTemp + 5) && (startRowIndices >= groupIndexTemp);
+        %group
+            startRowIndices(startRowIndices(:) == groupIndex) = [];
+        else
+            groupIndex = false;
+        end
     else
         groupIndex = false;
     end
+    
+    %if GroupIndex
 
     stopRowIndices = double.empty(length(startRowIndices),0);
 

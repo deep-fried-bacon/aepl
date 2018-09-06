@@ -23,12 +23,12 @@ function RunPlotData4(experPath,exper,condits)
     
     exper.ylimit = 20;
     
-    groups = exper.groupWellMap.keys();
+    groups = exper.groupConditMap.keys();
    
     %condits2(length(condits)) = struct('name','','wells',[],'mat',[]);
 
     %temp = exper.conditIndexMap('DMSO%');
-    temp = exper.conditIndexMap('RH30, DMSO .1%');
+    temp = exper.conditIndexMap('RH28-Matrigel, Control');
 %              try
     dmso = AeplUtil.MakeConditMat(condits(temp));
     dmso.mat(dmso.mat>50) = nan;
@@ -55,12 +55,12 @@ function RunPlotData4(experPath,exper,condits)
     %len = length(groups) - 1;
     %colors_p = [linspace(red(1),white(1),len)', linspace(red(2),white(2),len)', linspace(red(3),white(3),len)'];
     for group = groups
-        if strcmp(group{1},'DMSO .1%')
+        if strcmp(group{1},'Control')
             continue
         end
 %         if plotOptions.laeoutSet.make 
 %             count = 0;
-        gCondits = exper.groupWellMap(group{1});
+        gCondits = exper.groupConditMap(group{1});
         
         len = length(gCondits);
         colors_p = [linspace(black(1),white(1),len)', linspace(black(2),white(2),len)', linspace(black(3),white(3),len)'];

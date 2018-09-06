@@ -5,7 +5,7 @@
 %       exper
 %           conditions
 %           conditWellMap
-%           groupWellMap
+%           groupConditMap
 %           conditIndexMap
 %           frames
 %
@@ -39,7 +39,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
             [a,b,c] = ReadPlateMap(plateMapFile);
             exper.conditions = a;
             exper.conditWellMap = b;
-            exper.groupWellMap = c;
+            exper.groupConditMap = c;
         
     %end
     
