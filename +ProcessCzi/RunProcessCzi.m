@@ -91,11 +91,11 @@ function RunProcessCzi(experPath)
                 %   wells take about 40 sec total
                 
 
-                tic
-                ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
-                %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
-                fprintf(1,'\t\t')
-                toc
+%                 tic
+%                 ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
+%                 %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
+%                 fprintf(1,'\t\t')
+%                 toc
                 
                 %% Save (x, y) coords in csv
                 %   I do this after DrawTracks because I use this as the

@@ -31,6 +31,8 @@ f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 f18_03_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/2018-3-18';
 f18_08_02 = '/Volumes/baylieslab/Current Lab Members/Whitney/Whitney  8-2';
 
-experPath = f18_03_18;
-[exper,condits] = ReadCsvAsCondits(experPath);
+f17_11_10 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-10 New NF-kB and PI3K FDA approved drugs';
+
+experPath = f17_11_10;
+%[exper,condits] = ReadCsvAsCondits(experPath);
         
