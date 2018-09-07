@@ -15,7 +15,7 @@ gui.f = figure;
     si.pch = 4/5;    % pch = processCziPanel height
 
     si.sdh = .6;     % sdh = summarizeDataPanel height
-    si.sdw = 1/2;    % sdw = summarizeDataPanel width
+    si.sdw = 2/5;    % sdw = summarizeDataPanel width
 
 
 
@@ -109,13 +109,18 @@ gui.f = figure;
 
         % pd = plotData (Panel)
         gui.pd = uipanel(gui.p2, 'FontSize',si.fs, 'Title','PlotData',...
-            'Position',[si.sdw, si.s, si.sdw-si.s, 1-2*si.s]);
+            'Position',[si.sdw, si.s, 1-si.sdw-si.s, 1-2*si.s]);
         
             % cSet = byConditionSetLayout
             gui.cSet = uicontrol(gui.pd, 'Style','checkbox', 'Units','normalized',...
-                'FontSize',si.fs, 'String','cSet');
+                'FontSize',si.fs, 'String','byConditionSetLayout');
             si.cbh = gui.cSet.Position(4)*2;
             gui.cSet.Position = [si.s, 1-si.s-si.cbh, 1-2*si.s, si.cbh];
+            
+            % pdRun = plotDataRun (Button)
+            gui.pdRun = uicontrol(gui.pd, 'Style','pushbutton', 'Units','normalized',...
+                'FontSize',si.fs, 'String','Run');
+                gui.pdRun.Position = [si.s,si.s,gui.pdRun.Position(3),gui.pdRun.Position(4)];
 
             % grp = groupsRequiredPanel
             gui.grp = uipanel(gui.pd);
@@ -130,17 +135,14 @@ gui.f = figure;
 
                 % cAuto = byConditionAutoLayout
                 gui.cAuto = uicontrol(gui.grp, 'Style','checkbox', 'Units','normalized',...
-                    'FontSize',si.fs, 'String','gui.cAuto',...
+                    'FontSize',si.fs, 'String','byConditionAutoLayout',...
                     'Position',[2*si.s, 1-gui.gr.Position(4)-2*si.s-si.cbh, 1-3*si.s, si.cbh]);
                 % g = byGroup
                 gui.g = uicontrol(gui.grp, 'Style','checkbox', 'Units','normalized',...
-                    'FontSize',si.fs, 'String','g',...
+                    'FontSize',si.fs, 'String','byGroup',...
                     'Position',[2*si.s, 1-gui.gr.Position(4)-3*si.s-2*si.cbh, 1-3*si.s, si.cbh]);
 
-            % pdRun = plotDataRun (Button)
-            gui.pdRun = uicontrol(gui.pd, 'Style','pushbutton', 'Units','normalized',...
-                'FontSize',si.fs, 'String','Run');
-                gui.pdRun.Position = [si.s,si.s,gui.pdRun.Position(3),gui.pdRun.Position(4)];
+           
 
 % </panel2>
 % <functions>
@@ -148,23 +150,37 @@ gui.f = figure;
 
 
     function gptCallback(hObject,callbackdata)
-        hObject.Parent.Children(1).String = uigetdir();
-        gpeCallback(hObject.Parent.Children(1),[])
+        
+        startin = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/';
+        temp = uigetdir(startin);
+        if ~strcmp(temp,0)
+            hObject.Parent.Children(1).String = temp;
+            gpeCallback(hObject.Parent.Children(1),[])
+        end
     end
 
 
 
     function gpeCallback(hObject,callbackdata)
-        %disp('butts')
+         
         hasCzi = checkForCzi(hObject.String);
-        %h = hObject.Parent;
-        %h.Children(2).String = 'butts';
-
+       
         if startsWith(hasCzi, 'czi found:')
-            %h = hObject.Parent.Parent;
+            t = split(hasCzi,':');
             f = hObject.Parent.Parent;
-
-
+           
+            
+            pcp = f.Children(2).Children(1);
+            
+            
+            gree = [0.2,0.55,0.1];
+            
+            czir =  f.Children(2).Children(2);
+            czir.ForegroundColor = gree;
+           
+            czir.String = [czir.String;strcat("  found ",t(2), " czi files")];
+            
+            pcp.Children(2).ForegroundColor = gree;
 
         end
 
@@ -172,20 +188,21 @@ gui.f = figure;
 
 
     function hasCzi = checkForCzi(experPath)
-        %bool = true;
         if ~isfolder(experPath)
             hasCzi = 'cannot find folder';
-
+        
         else
+        
             contents = dir(experPath);
             count = 0;
             for i = 1:length(contents)
-                %disp(c.name)
                 if endsWith(contents(i).name,'.czi') 
                     count = count + 1;
                 end
+                
 
             end
+          
             if count > 0 
                 hasCzi = ['czi found:',num2str(count)];
             else 
@@ -193,6 +210,7 @@ gui.f = figure;
             end
 
         end
+        
 
     end
     
