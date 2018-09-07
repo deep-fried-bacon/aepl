@@ -2,106 +2,203 @@
 
 
 close all
-f = figure;
+gui.f = figure;
 
-s = .03;
+% <sizeSettings>
 
-p1h = 3/5;
+    % si = sizes
+    si.s = .03;      % s = spaces (padding)
 
-p1w = 1/3;
+    si.p1h = 3/5;    % p1h = panel1 height
+    si.p1w = 1/3;    % p1w = panel1 width
 
-pch = 4/5;
+    si.pch = 4/5;    % pch = processCziPanel height
 
-sdh=.6;
-sdw = 1/2;
-
-
-
-lh = .05;
-fs = 12;
-
-p1 = uipanel(f, 'Position',[s, s, p1w-s, p1h-s]);
-p2 = uipanel(f, 'Position',[p1w+s, s, 1-2*s-p1w, p1h-s]);
-
-t1 = uitable(f, 'Units','normalized', 'FontSize',fs, 'Position',[s, p1h+s, 1-2*s, 1-p1h-3*s-lh]);
-
-gpw = 1/7;
-gpp = uipanel(f, 'Position',[s, 1-s-lh, 1-2*s, lh]);
-gpt = uicontrol(gpp, 'Style','text', 'Units','normalized', 'FontSize',fs, 'Position',[0, 0, gpw, 1], 'String','Path:');
-getPath = uicontrol(gpp, 'Style','edit', 'Units','normalized', 'FontSize',fs, 'Position',[gpw, 0, 1-gpw, 1]);
+    si.sdh = .6;     % sdh = summarizeDataPanel height
+    si.sdw = 1/2;    % sdw = summarizeDataPanel width
 
 
 
-pc = uipanel(p1, 'FontSize',fs, 'Position',[s, s, 1-2*s, pch-s], 'Title','ProcessCzi');
-%cw = uicontrol(p1,'Style','text', 'Position',[s, pch+s, 1-s, 1-3*s-pch], 'String','Requires czi files');
-%cwp = uipanel(p1,'Position',[s, pch+s, 1-2*s, 1-2*s-pch]);
-czir = uicontrol(p1, 'Style','text', 'Units','normalized', 'FontSize',fs, 'HorizontalAlignment','left', 'Position',[2*s, pch+s, 1-3*s, 1-2*s-pch] ,'String','Requires czi files');
+    si.gpph = .06;      % gpph = getPathPanel height
+    si.gptw = 1/8;      % gptw = .getPathText width
+
+    si.fs = 12;         % fs = fontSize
+    
+% </sizeSettings>
+% <getPath>
+
+    % gpp = getPathPanel
+    gui.gpp = uipanel(gui.f, 'Position',[si.s, 1-si.s-si.gpph, 1-2*si.s, si.gpph]);
+
+        % gpt = getPathText
+        gui.gpt = uicontrol(gui.gpp, 'Style','pushbutton', 'Units','normalized',...
+            'FontSize',si.fs, 'HorizontalAlignment','left', 'String','Path:',...
+            'Callback',@gptCallback);
+            gui.gpt.Position = [0, si.s, si.gptw, gui.gpt.Position(4)];
+
+        % gpe = getPathEdit
+        gui.gpe = uicontrol(gui.gpp, 'Style','edit', 'Units','normalized',...
+            'FontSize',si.fs, 'HorizontalAlignment','left',...
+            'Position',[gui.gpt.Position(3), si.s, 1-gui.gpt.Position(3), gui.gpt.Position(4)],...
+            'Callback',@gpeCallback);
+
+% </getPath>
+% <table1>
+
+    % t1 = table1
+    gui.t1 = uitable(gui.f, 'Units','normalized', 'FontSize',si.fs,...
+        'Position',[si.s, si.p1h+si.s, 1-2*si.s, 1-si.p1h-3*si.s-si.gpph]);
+
+% </table1>
+% <panel1>
+
+    % p1 = panel1
+    gui.p1 = uipanel(gui.f, 'Position',[si.s, si.s, si.p1w-si.s, si.p1h-si.s]); 
+        
+        % czir = czi required
+        gui.czir = uicontrol(gui.p1, 'Style','text', 'Units','normalized',...
+            'FontSize',si.fs, 'HorizontalAlignment','left', 'String','Requires czi files',...
+            'Position',[2*si.s, si.pch+si.s, 1-3*si.s, 1-2*si.s-si.pch]);
+         
+        % pc = ProcessCzi (Panel)
+        gui.pc = uipanel(gui.p1, 'FontSize',si.fs,...
+            'Position',[si.s, si.s, 1-2*si.s, si.pch-si.s], 'Title','ProcessCzi');
+            % pcRun = ProcessCziRun (Button)
+            gui.pcRun = uicontrol(gui.pc, 'Units','normalized', 'Style','pushbutton',...
+                'FontSize',si.fs, 'String','Run');
+                gui.pcRun.Position = [si.s,si.s,gui.pcRun.Position(3),gui.pcRun.Position(4)];
+            
+            % bg = buttongroup
+            gui.bg = uibuttongroup(gui.pc, 'Units','normalized',...
+                'Position',[si.s, gui.pcRun.Position(4)+2*si.s, 1-2*si.s, 1-gui.pcRun.Position(4)-3*si.s]);
+
+                gui.notif = uicontrol(gui.bg, 'Style','radiobutton', 'Units','normalized',...
+                    'FontSize',si.fs, 'String', '<html>Create tracking<br>tifs</html>');
+                si.rbh = gui.notif.Position(4)*2;
+                gui.notif.Position = [si.s, 1-si.s-si.rbh ,1-2*si.s,si.rbh];
+                gui.tif = uicontrol(gui.bg, 'Style','radiobutton', 'Units','normalized',...
+                    'FontSize',si.fs,'Position',[si.s, 1-2*si.s-2*si.rbh,1-2*si.s,si.rbh],...
+                    'String','<html>Do not create<br>tracking tifs</html>');
+% </panel1>
+% <panel2>
+
+    % p2 = panel2
+    gui.p2 = uipanel(gui.f, 'Position',[si.p1w+si.s, si.s, 1-2*si.s-si.p1w, si.p1h-si.s]);
+
+        % csvr = csv required
+        gui.csvr = uicontrol(gui.p2, 'Style','text', 'Units','normalized',...
+            'FontSize',si.fs, 'HorizontalAlignment','left','String','Requires csv files');
+            si.r2h = gui.csvr.Position(4);
+            gui.csvr.Position = [si.s, 1-2*si.s-si.r2h, si.sdw-2*si.s, si.r2h]; 
+
+        % pmr = platemap required
+        gui.pmr = uicontrol(gui.p2, 'Style','text', 'Units','normalized', 'FontSize',si.fs,...
+            'HorizontalAlignment','left', 'String','Requires platemap file',...
+            'Position',[si.s, 1-3*si.s-2*si.r2h, si.sdw-2*si.s, si.r2h]);
 
 
 
-sd = uipanel(p2, 'FontSize',fs, 'Position',[s, s, sdw-2*s, sdh-s], 'Title','SummarizeData');
+        % sd = summarizeData (Panel)
+        gui.sd = uipanel(gui.p2, 'FontSize',si.fs, 'Title','SummarizeData',...
+            'Position',[si.s, si.s, si.sdw-2*si.s, si.sdh-si.s]);
+            
+            % sdRun = summarizeDataRun (Button)
+            gui.sdRun = uicontrol(gui.sd, 'Style','pushbutton', 'Units','normalized',...
+                'FontSize',si.fs, 'String','Run');
+            gui.sdRun.Position = [si.s,si.s,gui.sdRun.Position(3),gui.sdRun.Position(4)];
 
-pd = uipanel(p2, 'FontSize',fs, 'Position',[sdw, s, sdw-s, 1-2*s], 'Title','PlotData');
+        % pd = plotData (Panel)
+        gui.pd = uipanel(gui.p2, 'FontSize',si.fs, 'Title','PlotData',...
+            'Position',[si.sdw, si.s, si.sdw-si.s, 1-2*si.s]);
+        
+            % cSet = byConditionSetLayout
+            gui.cSet = uicontrol(gui.pd, 'Style','checkbox', 'Units','normalized',...
+                'FontSize',si.fs, 'String','cSet');
+            si.cbh = gui.cSet.Position(4)*2;
+            gui.cSet.Position = [si.s, 1-si.s-si.cbh, 1-2*si.s, si.cbh];
 
+            % grp = groupsRequiredPanel
+            gui.grp = uipanel(gui.pd);
+            gui.grp.Position = [si.s, gui.pdRun.Position(4)+2*si.s , 1-2*si.s, 1-3*si.s-si.cbh- gui.pdRun.Position(4)];
 
-%r2h = (1-sdh-3*s)/2;
-csvr = uicontrol(p2, 'Style','text', 'Units','normalized', 'FontSize',fs,...
-    'HorizontalAlignment','left','String','Requires csv files');
-r2h = csvr.Position(4);
-csvr.Position = [s, 1-2*s-r2h, sdw-2*s, r2h]; 
-
-pmr = uicontrol(p2, 'Style','text', 'Units','normalized', 'FontSize',fs,...
-    'HorizontalAlignment','left', 'Position',[s, 1-3*s-2*r2h, sdw-2*s, r2h] ,'String','Requires platemap file');
-
-
-sdRun = uicontrol(sd, 'Style','pushbutton', 'Units','normalized', 'FontSize',fs, 'String','Run');
-sdRun.Position = [s,s,sdRun.Position(3),sdRun.Position(4)];
-
-
-pdRun = uicontrol(pd, 'Style','pushbutton', 'Units','normalized', 'FontSize',fs, 'String','Run');
-pdRun.Position = [s,s,pdRun.Position(3),pdRun.Position(4)];
-
-
-
-%pcRun = uicontrol(pc, 'Units','normalized', 'Style','pushbutton', 'FontSize',fs, 'Position',[s,s,1-2*s,.3], 'String','Run');
-pcRun = uicontrol(pc, 'Units','normalized', 'Style','pushbutton', 'FontSize',fs, 'String','Run');
-%p = pcRun.Position;
-pcRun.Position = [s,s,pcRun.Position(3),pcRun.Position(4)];
-
-bg = uibuttongroup(pc, 'Units','normalized', 'Position',[s,pcRun.Position(4)+2*s,1-2*s,1-pcRun.Position(4)-3*s]);
-
-notif = uicontrol(bg, 'Style','radiobutton', 'Units','normalized', 'FontSize',fs, 'String','Create tracking tifs');
-rbh = notif.Position(4)*2;
-notif.Position = [s, 1-s-rbh ,1-2*s,rbh];
-tif = uicontrol(bg, 'Style','radiobutton', 'Units','normalized', 'FontSize',fs,'Position',[s, 1-2*s-2*rbh,1-2*s,rbh], 'String','<html>Do not create<br>tracking tifs</html>');
+                % gr = groupsRequired (text)
+                gui.gr = uicontrol(gui.grp, 'Style','text', 'Units','normalized', 'FontSize',si.fs,...
+                    'HorizontalAlignment','left',  'String','Requires groups in platemap file');
 
 
-cSet = uicontrol(pd, 'Style','checkbox', 'Units','normalized', 'FontSize',fs, 'String','cSet');
-cbh = cSet.Position(4)*2;
-cSet.Position = [s, 1-s-cbh, 1-2*s, cbh];
-% cSet.Position(2) = 1-s-cbh;
-% cSet.Position(1) = s;
+                gui.gr.Position = [si.s, 1-si.s-2*gui.gr.Position(4), 1-2*si.s, 2*gui.gr.Position(4)];
 
+                % cAuto = byConditionAutoLayout
+                gui.cAuto = uicontrol(gui.grp, 'Style','checkbox', 'Units','normalized',...
+                    'FontSize',si.fs, 'String','gui.cAuto',...
+                    'Position',[2*si.s, 1-gui.gr.Position(4)-2*si.s-si.cbh, 1-3*si.s, si.cbh]);
+                % g = byGroup
+                gui.g = uicontrol(gui.grp, 'Style','checkbox', 'Units','normalized',...
+                    'FontSize',si.fs, 'String','g',...
+                    'Position',[2*si.s, 1-gui.gr.Position(4)-3*si.s-2*si.cbh, 1-3*si.s, si.cbh]);
 
-grp = uipanel(pd);
-%grp.Position(4) = 1-2*s-cSet.Position(4);
-grp.Position = [s, pdRun.Position(4)+2*s , 1-2*s, 1-3*s-cbh- pdRun.Position(4)];
+            % pdRun = plotDataRun (Button)
+            gui.pdRun = uicontrol(gui.pd, 'Style','pushbutton', 'Units','normalized',...
+                'FontSize',si.fs, 'String','Run');
+                gui.pdRun.Position = [si.s,si.s,gui.pdRun.Position(3),gui.pdRun.Position(4)];
 
-gr = uicontrol(grp, 'Style','text', 'Units','normalized', 'FontSize',fs, 'HorizontalAlignment','left',  'String','Requires groups in platemap file');
-% gr.Position(1) = s;
-% gr.Position(2) = 1-s-gr.Position(4);
-
-gr.Position = [s, 1-s-2*gr.Position(4), 1-2*s, 2*gr.Position(4)];
-
-cAuto = uicontrol(grp, 'Style','checkbox', 'Units','normalized', 'FontSize',fs,...
-    'Position',[2*s, 1-gr.Position(4)-2*s-cbh, 1-3*s, cbh], 'String','cAuto');
-g = uicontrol(grp, 'Style','checkbox', 'Units','normalized', 'FontSize',fs,...
-    'Position',[2*s, 1-gr.Position(4)-3*s-2*cbh, 1-3*s, cbh], 'String','g');
+% </panel2>
+% <functions>
 
 
 
+    function gptCallback(hObject,callbackdata)
+        hObject.Parent.Children(1).String = uigetdir();
+        gpeCallback(hObject.Parent.Children(1),[])
+    end
 
-% [s, 1-s-h, , ]
 
 
+    function gpeCallback(hObject,callbackdata)
+        %disp('butts')
+        hasCzi = checkForCzi(hObject.String);
+        %h = hObject.Parent;
+        %h.Children(2).String = 'butts';
+
+        if startsWith(hasCzi, 'czi found:')
+            %h = hObject.Parent.Parent;
+            f = hObject.Parent.Parent;
+
+
+
+        end
+
+    end
+
+
+    function hasCzi = checkForCzi(experPath)
+        %bool = true;
+        if ~isfolder(experPath)
+            hasCzi = 'cannot find folder';
+
+        else
+            contents = dir(experPath);
+            count = 0;
+            for i = 1:length(contents)
+                %disp(c.name)
+                if endsWith(contents(i).name,'.czi') 
+                    count = count + 1;
+                end
+
+            end
+            if count > 0 
+                hasCzi = ['czi found:',num2str(count)];
+            else 
+                hasCzi = ['no czi found'];
+            end
+
+        end
+
+    end
+    
+    
+% </functions>
+    
+    
+    
 
