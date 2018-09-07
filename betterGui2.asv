@@ -218,16 +218,16 @@ gui.f = figure;
         %disp('butts')
         f = hObject.Parent.Parent.Parent;
         experPath = f.Children(4).Children(1).String;
-        makeTifs = hObject.Parent.Children(1).Children(1);
-        %disp(makeTifs)
-        %ProcessCzi.RunProcessCzi(experPath,makeTifs)
+        makeTifs = hObject.Parent.Children(1).Childr;
+        disp(makeTifs)
+        %PlotData.RunPlotData(experPath,makeTifs)
     end
     
     function sdRunPressed(hObject,callbackdata)
         %disp(hObject.Parent.Parent.Parent.Children)
         f = hObject.Parent.Parent.Parent;
         experPath = f.Children(4).Children(1).String;
-        %SummarizeData.RunSummarizeData(experPath)
+        %SummarizeData.RunSummarizeData()
     
     end
     
@@ -237,8 +237,7 @@ gui.f = figure;
         doConSet = hObject.Parent.Children(3).Value;
         doConAuto = hObject.Parent.Children(1).Children(1);
         dobyGro = hObject.Parent.Children(1).Children(2);
-        % PlotData.RunPlotData(experPath,doConSet,doConAuto,doByGro);
-        % disp(doConAuto)
+        %disp(doConAuto)
     end
     
 
