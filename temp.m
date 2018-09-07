@@ -32,7 +32,7 @@ f18_03_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 f18_08_02 = '/Volumes/baylieslab/Current Lab Members/Whitney/Whitney  8-2';
 
 f17_11_10 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-10 New NF-kB and PI3K FDA approved drugs';
-
+f17_11_17 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-17 all cell lines top hits first run molly and whitney';
 experPath = f17_11_10;
 %[exper,condits] = ReadCsvAsCondits(experPath);
         
