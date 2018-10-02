@@ -21,7 +21,7 @@
 %     %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
 %     
 %     CONST.SET_LAEOUT = [2, 3];    % [rows, columns
-%     CONST.CONTROL = 'Control';
+     CONST.CONTROL = 'DMSO .1%';
 const
 
 f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
@@ -33,6 +33,11 @@ f18_08_02 = '/Volumes/baylieslab/Current Lab Members/Whitney/Whitney  8-2';
 
 f17_11_10 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-10 New NF-kB and PI3K FDA approved drugs';
 f17_11_17 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-17 all cell lines top hits first run molly and whitney';
-experPath = f17_11_10;
-%[exper,condits] = ReadCsvAsCondits(experPath);
-        
+f17_12_28 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-12-28';
+
+f18_09_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/20180918/movies';
+
+experPath = f18_09_18;
+[exper,condits] = ReadCsvAsCondits(experPath);
+
+%ProcessCzi.RunProcessCzi(experPath)
