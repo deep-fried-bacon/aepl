@@ -91,11 +91,11 @@ function RunProcessCzi(experPath)
                 %   wells take about 40 sec total
                 
 
-%                 tic
-%                 ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
-%                 %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
-%                 fprintf(1,'\t\t')
-%                 toc
+                tic
+                ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
+                %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
+                fprintf(1,'\t\t')
+                toc
                 
                 %% Save (x, y) coords in csv
                 %   I do this after DrawTracks because I use this as the
@@ -113,10 +113,34 @@ function RunProcessCzi(experPath)
             
         catch e
             fprintf(2,wellName)
-            fprintf(2,"exception: " + getReport(e)+"\n")
+            fprintf(2," exception: " + getReport(e)+"\n")
+            
+            
+            
+            s = {{[experPath,':']}, join({wellName,'failed'}), join({'exception:', getReport(e)})};
+            % sendmail('brown.amelia@gmail.com','Update from matlab: RunProcessCzi',[s{:}])
+            fprintf(2, "should have email\n")
+            fprintf(2, datestr(datetime('now')) + "\n")
+
+        
         end
         
     end
+    
+    
+    
+    %sendmail('brown.amelia@gmail.com','Matlab Finished: RunProcessCzi')
+
+    try 
+        %[exper,condits] = ReadCsvAsCondits(experPath);
+
+
+        SummarizeData.RunSummarizeData(experPath)
+    catch
+        
+    end
+    
+    
 
 
 end

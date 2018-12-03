@@ -92,13 +92,14 @@ function RunPlotData6(experPath,exper,condits)
             plotNum = plotNum + 1;
             
             if plotNum > laeout(1)*laeout(2)
+                %keyboard
                 h = gcf;
 
                 set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
 
-                %fname = [num2str(figNum),CONST.PLOT_SUF];
-                print(h,tempfile,'-dpdf')
-                append_pdfs.append_pdfs(outfile,tempfile)
+                fname = [num2str(figNum),CONST.PLOT_SUF];
+                print(h,fullfile(procDir,fname),'-dpdf')
+                %append_pdfs.append_pdfs(outfile,tempfile)
                 close(h)
 
                 figure

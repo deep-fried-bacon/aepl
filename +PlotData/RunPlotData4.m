@@ -28,7 +28,7 @@ function RunPlotData4(experPath,exper,condits)
     %condits2(length(condits)) = struct('name','','wells',[],'mat',[]);
 
     %temp = exper.conditIndexMap('DMSO%');
-    temp = exper.conditIndexMap('RH28-Matrigel, Control');
+    temp = exper.conditIndexMap('RH30, DMSO .1%');
 %              try
     dmso = AeplUtil.MakeConditMat(condits(temp));
     dmso.mat(dmso.mat>50) = nan;
@@ -42,7 +42,8 @@ function RunPlotData4(experPath,exper,condits)
 %     % elseif plotOptions.laeoutByOneGroup
 %         % need to add
 %     end
-    laeout = [2,3];
+    %laeout = [2,3];
+    laeout = [1,2];
     plotNum = 1;
     figNum = 1;
     
