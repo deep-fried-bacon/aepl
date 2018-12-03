@@ -1,28 +1,28 @@
-%     global CONST
-%     CONST = struct();
-%     
-%     CONST.PLATE_MAP_SUF = '_plate-map.csv';
-%     CONST.CZI_SUF = '.czi';
-%     CONST.CONDIT_DATA_SUF = '-veloc-conditions.csv';
-%     CONST.WELL_DATA_SUF = '-veloc-wells.csv';
-%     CONST.PLOT_SUF = '-veloc-plot.pdf';
-%    
-%     CONST.AVG_PREF = 'Avg';
-%     CONST.MEDI_PREF = 'Median';
-% 
-%     
-%     CONST.CZI_DIR = '';
-%     CONST.CSV_DIR = 'Csv';
-%     CONST.PROCESSED_DIR = 'ProcessedData';
-%     CONST.ANNOTATED_TIF_DIR = 'TifsWithTracks';
-%     
-%     %CONST.COL_LAYOUT_VER = '4 cols';
-%     CONST.COL_LAYOUT_VER = '5 cols';
-%     %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
-%     
-%     CONST.SET_LAEOUT = [2, 3];    % [rows, columns
-     CONST.CONTROL = 'DMSO .1%';
-const
+    global CONST
+    CONST = struct();
+    
+    CONST.PLATE_MAP_SUF = '_plate-map.csv';
+    CONST.CZI_SUF = '.czi';
+    CONST.CONDIT_DATA_SUF = '-veloc-conditions.csv';
+    CONST.WELL_DATA_SUF = '-veloc-wells.csv';
+    CONST.PLOT_SUF = '-veloc-plot.pdf';
+   
+    CONST.AVG_PREF = 'Avg';
+    CONST.MEDI_PREF = 'Median';
+
+    
+    CONST.CZI_DIR = '';
+    CONST.CSV_DIR = 'Csv';
+    CONST.PROCESSED_DIR = 'ProcessedData';
+    CONST.ANNOTATED_TIF_DIR = 'TifsWithTracks';
+    
+    %CONST.COL_LAYOUT_VER = '4 cols';
+    CONST.COL_LAYOUT_VER = '5 cols';
+    %CONST.COL_LAYOUT = AeplUtil.GetColLayout(CONST.COL_LAYOUT_VER);
+    
+    CONST.SET_LAEOUT = [2, 3];    % [rows, columns
+    CONST.CONTROL = 'DMSO .1%';
+
 
 f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
 f17_06_28 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';
@@ -50,15 +50,27 @@ f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma p
 
 experPath = f18_09_26;
 
+
+
+ProcesCzi(experPath)
+
+
+
+[exper,condits] = ReadCsvAsCondits(experPath);
+
+SummarizeData.RunSummarizeData(experPath,exper,condits)
+PlotData.RunPlotData(experPath,exper,condits)
+
+
 %[exper,condits] = ReadCsvAsCondits(experPath);
 
 
-ProcessCzi.RunProcessCzi(experPath)
-clear
-
-f18_09_28 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180928';
-ProcessCzi.RunProcessCzi(f18_09_28)
-clear
-
-f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180929';
-ProcessCzi.RunProcessCzi(f18_09_29)
+% ProcessCzi.RunProcessCzi(experPath)
+% clear
+% 
+% f18_09_28 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180928';
+% ProcessCzi.RunProcessCzi(f18_09_28)
+% clear
+% 
+% f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180929';
+% ProcessCzi.RunProcessCzi(f18_09_29)
