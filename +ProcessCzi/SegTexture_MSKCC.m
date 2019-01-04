@@ -6,7 +6,7 @@
 
 function [imBW,I1] = SegTexture_MSKCC(I)
 
-showPlot = false;
+showPlot = true;
 
 if isempty(I)
     return 
@@ -17,13 +17,13 @@ I1 = mat2gray(I);
 filtWind = max(round(size(I)/10),1);
 %I1 = mat2gray(I - imgaussfilt(I,filtWind));
 
-Igrad1 = imadjust(mat2gray(imgradient(I1)));
+Igrad1 = mat2gray(imgradient(I1));
 
 % Igrad0 = imclose(Igrad0,strel('disk',5)); 
-% Igrad0 = imopen(Igrad0,strel('disk',3));
+Igrad1 = imopen(Igrad1,strel('disk',7));
 
 % Igrad0 = mat2gray(Igrad0 - imgaussfilt(Igrad0,filtWind));
-
+Igrad1 = imadjust(Igrad1);
 Igrad1 = mat2gray(imgaussfilt(Igrad1,3));
 %  Igrad1 = mat2gray(Igrad0 );
 %% Seg Gradient 
@@ -33,13 +33,11 @@ Imed = counts(h==max(h));
 Imed = Imed(1);
 
 %% 
-testLow = counts(h < (max(h)*0.05));
-testLow = max([testLow(testLow < Imed),0]);
-testHigh = counts(h < (max(h)*0.05));
+testHigh = counts(h < (max(h)*0.2));
 testHigh = min(testHigh(testHigh > Imed));
 
 %% 
-thresh = [testLow,testHigh];
+thresh = [0,testHigh];
 imBW = Igrad1 >= thresh(2);
 
 imBW = imclose(imBW,strel('disk',5)); 
@@ -49,16 +47,8 @@ imBW = imopen(imBW,strel('disk',3));
 % I1 = mat2gray(I1 - imgaussfilt(I1,filtWind));
 % [h2,counts2] = histcounts(I1);
 % 
-% h2 = medfilt1(h2);
-% Imed = counts2(h2==max(h2));
-% Imed = Imed(1);
-% ILow = counts2(h2 < (max(h2)*0.02));
-% ILow = max([ILow(ILow < Imed),0]);
-% imD = I1 <= ILow;
-% imD = bwareaopen(imD,50);
-% 
 % imBW = imBW & ~imD;
-imBW = imerode(imBW,ones(12));
+imBW = imerode(imBW,ones(10));
 imBW = bwareaopen(imBW,500);
 
 %%  Show Segmentation

@@ -63,14 +63,15 @@ f18_10_03 =  '/Volumes/baylieslab-8/Current Lab Members/Whitney/Rhabdomyosarcoma
 f18_10_23 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181023'
 f18_10_24 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181024/Whitney 10-25'
 f18_11_06 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181106'
-f18_11_09 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181109'
+f18_11_07 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181107'
+f18_11_07 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181109'
 %%This is where you put the file name of the czi folder you wan to run. The
 %%WTF is an assigned name whereas anything after the = is the path name.
 %%For every new one just make a new name ie see below
 %fyy_mm_dd = 'folderPathHere';
 
 %% set experPath to the folder you want to run right now from the assigned name above
-experPath = f18_11_09;
+experPath = f18_11_07;
 
 
 
