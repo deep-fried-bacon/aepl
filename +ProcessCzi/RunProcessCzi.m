@@ -4,7 +4,6 @@
 %   Does not require plate map
 %
 
-
 function RunProcessCzi(experPath) 
     disp('Starting RunProcessCzi')
 
@@ -15,7 +14,9 @@ function RunProcessCzi(experPath)
     end
 
     global CONST
-    
+    if isempty(CONST)
+        initConstants
+    end 
     %% Make tif dir and csv dir if they don't exist
     tifSaveDir = fullfile(experPath,CONST.ANNOTATED_TIF_DIR);
     if ~exist(tifSaveDir,'dir')
@@ -27,8 +28,6 @@ function RunProcessCzi(experPath)
         mkdir(csvSaveDir)
     end
     
-    
-
     %% intialize exper
     exper = struct();
     exper.czi = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
@@ -104,7 +103,9 @@ function RunProcessCzi(experPath)
                 %   test for whether or not a well has already been run,
                 %   and DrawTracks is more likely to fail
                 tic
-                ProcessCzi.ExportTrackStats(cells2,imdim,wellCsvSavePath)
+                
+                %ProcessCzi.ExportTrackStats(cells2,imdim,wellCsvSavePath)
+                ProcessCzi.ExportTrackStatsSmall(cells2,imdim,wellCsvSavePath)
                 fprintf(1,'\t\t')
                 toc
 

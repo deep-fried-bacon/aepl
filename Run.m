@@ -39,9 +39,6 @@ f18_09_18 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 
 f18_09_25 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180925';
 
-
-
-
 f18_09_26 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180926';
 %f18_09_18 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180918';
 %f18_09_25 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180925';
