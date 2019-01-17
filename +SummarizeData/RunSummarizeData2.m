@@ -6,9 +6,9 @@
 %
 
 
-function RunSummarizeData(experPath,exper,condits)
+function RunSummarizeData(experPath)
     
-    %[exper,condits] = ReadCsvAsCondits(experPath);
+    [exper,condits] = ReadCsvAsCondits(experPath);
     
 
     global CONST

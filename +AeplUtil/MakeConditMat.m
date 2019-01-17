@@ -13,7 +13,7 @@ function condit = MakeConditMat(condit)
     for w = 1:length(condit.wells)
         try 
             %disp(w)
-            if isempty(condit.wells(w).cells)
+            if condit.wells(w).path == 0
                 continue
             end
                 
@@ -22,7 +22,7 @@ function condit = MakeConditMat(condit)
 
             condit.wells(w).mat = [];
             wCol = 1;
-
+            
             for c = 1:length(condit.wells(w).cells)
                 try 
                     condit.mat(1:frames,col) = condit.wells(w).cells(c).distance(2:end);
@@ -49,4 +49,5 @@ function condit = MakeConditMat(condit)
         
         
     end
+    condit.mat(condit.mat>50)=nan;
 end

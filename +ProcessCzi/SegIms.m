@@ -10,7 +10,7 @@ function [cells] = SegIms(im)
 
     cells = cell(1,size(im,5));
     UID = 1;
-    for t = 1:size(im,5)
+    for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
 
         [imBW,~] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
 

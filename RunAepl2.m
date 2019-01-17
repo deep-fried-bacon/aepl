@@ -24,7 +24,7 @@
 %
     
 
-function RunAepl
+function RunAepl2
 %% options code
 
     %% callback functions for gui
@@ -71,8 +71,8 @@ function RunAepl
     CONST.CONTROL = 'Control';
     
     
-    dev = true;
-    %dev = false;
+    %dev = true;
+    dev = false;
 
     if dev
         options = struct();

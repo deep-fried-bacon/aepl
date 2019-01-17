@@ -5,7 +5,7 @@
 %       exper
 %           conditions
 %           conditWellMap
-%           groupWellMap
+%           groupConditMap
 %           conditIndexMap
 %           frames
 %
@@ -39,7 +39,7 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
             [a,b,c] = ReadPlateMap(plateMapFile);
             exper.conditions = a;
             exper.conditWellMap = b;
-            exper.groupWellMap = c;
+            exper.groupConditMap = c;
         
     %end
     
@@ -61,24 +61,24 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
         condits(c).wells(size(conditWells)) = struct();
 
         for w = 1:length(conditWells)
-            condits(c).wells(w).name = conditWells(w);
+            condits(c).wells(w).name = conditWells{w};
             %condits(c).wells(w).path = strcat(exper.folder,'Xls/', exper.name,'_',condits(c).wells(w).name{1}, '.csv');
-            condits(c).wells(w).path = AeplUtil.FindFile(csvDir,condits(c).wells(w).name);
+            condits(c).wells(w).path = AeplUtil.LookForFile(csvDir,condits(c).wells(w).name);
             %if exist(condits(c).wells(w).path, 'file')
             if condits(c).wells(w).path
 
                 
                     
-%                 condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
-%                     
-%                 condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
-% 
-%                 condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
+                condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
+                    
+                condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
+
+                condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
 
                 %% Read in csv file
-                condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
-                condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
-                condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
+%                 condits(c).wells(w).raw = readtable(condits(c).wells(w).path);
+%                 condits(c).wells(w).raw = condits(c).wells(w).raw.Variables;
+%                 condits(c).wells(w).cellCount = width(condits(c).wells(w).raw)/COL_COUNT;
                 
                 %% Intialize struct array for cells
                 condits(c).wells(w).cells(condits(c).wells(w).cellCount) = struct();
@@ -96,14 +96,18 @@ function [exper, condits] = ReadCsvAsCondits(experPath)
 
                 end
             else 
-                disp(strcat('missing csv file', condits(c).wells(w).name))
+                fprintf(1,'missing csv file for well %s.\n', condits(c).wells(w).name)
             end
         end
     end
     
+    exper.frames = 0;
     % let's make this frameCount
-    exper.frames = length(condits(1).wells(1).cells(1).xcoords);
-
-    
+    while (exper.frames == 0)
+        try 
+            exper.frames = length(condits(1).wells(1).cells(1).xcoords);
+        catch e
+        end
+    end
 
 end

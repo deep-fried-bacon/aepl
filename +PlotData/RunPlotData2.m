@@ -5,7 +5,7 @@
 %
 
 
-function RunPlotData(experPath,plotOptions)
+function RunPlotData2(experPath)
     
 
     global CONST
@@ -28,22 +28,22 @@ function RunPlotData(experPath,plotOptions)
     condits2(length(condits)) = struct('name','','wells',[],'mat',[]);
 
     
-    if plotOptions.laeoutSet.make 
-        laeout = CONST.SET_LAEOUT;
-        count = 0;
-    % elseif plotOptions.laeoutByOneGroup
-        % need to add
-    end
+%     if plotOptions.laeoutSet.make 
+%         laeout = CONST.SET_LAEOUT;
+%         count = 0;
+%     % elseif plotOptions.laeoutByOneGroup
+%         % need to add
+%     end
     
     for group = groups
-        if plotOptions.laeoutSet.make 
-            count = 0;
+%         if plotOptions.laeoutSet.make 
+%             count = 0;
         gCondits = exper.groupWellMap(group{1});
         
-        if plotOptions.laeoutByGroup.make
-            plotCount = length(gCondits);
-            laeout = AeplUtil.MakeLaeout(plotCount);
-        end
+%         if plotOptions.laeoutByGroup.make
+             plotCount = length(gCondits);
+             laeout = AeplUtil.MakeLaeout(plotCount);
+%         end
         
         figure
         plotNum = 1;
@@ -63,46 +63,46 @@ function RunPlotData(experPath,plotOptions)
             PlotData.MakeConditSubplot(condits2(cond).mat,exper)
             plotNum = plotNum + 1;
             
-            if plotOptions.laeoutSet.make 
-                if plotNum > laeout(1)*laeout(2)
-                    h = gcf;
-
-                    set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
-
-                    fname = [group{1},'_',num2str(count),CONST.PLOT_SUF];
-                    print(h,fullfile(procDir,fname),'-dpdf')
-                    close(h)
-                  
-                    figure
-                    count = count+1;
-                    plotNum = 1;
-                end
-            end
+%             if plotOptions.laeoutSet.make 
+%                 if plotNum > laeout(1)*laeout(2)
+%                     h = gcf;
+% 
+%                     set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
+% 
+%                     fname = [group{1},'_',num2str(count),CONST.PLOT_SUF];
+%                     print(h,fullfile(procDir,fname),'-dpdf')
+%                     close(h)
+%                   
+%                     figure
+%                     count = count+1;
+%                     plotNum = 1;
+%                 end
+%             end
         end
-            if plotOptions.laeoutSet.make 
-               if plotNum > 1
-                    h = gcf;
-
-                    set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
-
-                    fname = [group{1},CONST.PLOT_SUF];
-
-                    print(h,fullfile(procDir,fname),'-dpdf')
-                    close(h)
-               else
-                   close(gcf)
-               end
-            else
+%         if plotOptions.laeoutSet.make 
+           if plotNum > 1
                 h = gcf;
 
                 set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
-   
+
                 fname = [group{1},CONST.PLOT_SUF];
 
                 print(h,fullfile(procDir,fname),'-dpdf')
                 close(h)
-                
-            end
+           else
+               close(gcf)
+           end
+%         else
+%             h = gcf;
+% 
+%             set(h, 'PaperUnits','inches','PaperPosition',[0 0 11 8.5],'PaperOrientation','landscape')
+% 
+%             fname = [group{1},CONST.PLOT_SUF];
+% 
+%             print(h,fullfile(procDir,fname),'-dpdf')
+%             close(h)
+% 
+%         end
         
     end
     %condits = condits2;
