@@ -7,13 +7,12 @@ function DrawTracks(im,Segs,fName)
 fprintf(1,'\tDrawing tracks and saving to tif\n')
 fprintf(1,'\t\tframe 1')
 
-firstRound = 0;
+firstRound = 1;
 
 cmap = colormap('jet');
 cmap = cmap(randperm(size(cmap,1)),:);
 
 saveframe  = 1;
-AllSegs = vertcat(Segs{:});
 
 % AllTracks = [AllSegs.Tid];
 % Tracks = unique(AllTracks);
@@ -28,7 +27,7 @@ for i = 1:size(im,3)
     %h = figure('Visible', 'off');
     %h = figure();
 
-    Tsegs = AllSegs([AllSegs.time]==i);
+    Tsegs = Segs([Segs.time]==i);
     % put break on next line to step through outlined cells
     TTracks = [Tsegs.Tid];
     
@@ -39,14 +38,21 @@ for i = 1:size(im,3)
     axis equal
     axis off
     hold on
+    
     for ii = 1:length(TTracks)
         
         pts = vertcat(Tsegs(ii).Bound);
         cid = mod(TTracks(ii),64)+1;
         plot(pts(:,2),pts(:,1),'-','Color',cmap(cid,:))
         cent = Tsegs(ii).Centroid;
+
         text(cent(1),cent(2),num2str(Tsegs(ii).Tid),'Color',cmap(cid,:),'FontSize',10)
         
+        if Tsegs(ii).Label==1
+            viscircles([cent(1),cent(2)],20,'Color','g');
+        elseif Tsegs(ii).Label==2
+            viscircles([cent(1),cent(2)],20,'Color','r');
+        end 
     end
     %hold off
     drawnow
@@ -54,9 +60,9 @@ for i = 1:size(im,3)
     
     if saveframe
         tempGca = getframe(h);
-        if firstRound == 0
-            imwrite(tempGca.cdata,fName)
-            firstRound = 1;
+        if firstRound == 1
+            imwrite(tempGca.cdata,fName,'WriteMode','overwrite')
+            firstRound = 0;
         else
             imwrite(tempGca.cdata,fName,'WriteMode','append') 
         end

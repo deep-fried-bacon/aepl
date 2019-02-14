@@ -47,10 +47,10 @@ f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma p
 
 experPath = f18_09_26;
 
-
-
 ProcesCzi(experPath)
 
+deathTest = 'D:\OneDrive\Whitney Images';
+deathTest = 'C:\Users\eac84\OneDrive\Desktop\death_ex_for_edgar\death_ex_for_edgar';
 
 
 [exper,condits] = ReadCsvAsCondits(experPath);
@@ -58,6 +58,9 @@ ProcesCzi(experPath)
 SummarizeData.RunSummarizeData(experPath,exper,condits)
 PlotData.RunPlotData(experPath,exper,condits)
 
+profile on 
+ProcessCzi.RunProcessCzi(deathTest)
+profile viewer
 
 %[exper,condits] = ReadCsvAsCondits(experPath);
 

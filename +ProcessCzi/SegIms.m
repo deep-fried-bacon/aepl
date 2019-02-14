@@ -5,30 +5,42 @@
 
 
 
-function [cells] = SegIms(im)
+function [cellsOut] = SegIms(im)
     fprintf(1,'\tSegmenting Images\n')
 
     cells = cell(1,size(im,5));
     UID = 1;
+    
+    %%
+    im = mat2gray(im);
+    imf = median(im,5);
+    imf = imgaussfilt(imf,50);
+    im = im - imf;
+%     im = permute(medfilt3(permute(im,[1 2 5 4 3]),[3,3,3]),[1 2 5 4 3]);
+    %%
     for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
 
-        [imBW,~] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
+        [imBW,bBri] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
 
         imBW = SplitLargeAreas(imBW);
 
         [B] = bwboundaries(imBW,'noholes');
 
-        CC = regionprops(imBW,'centroid','area','PixelList');
+        CC = regionprops(imBW,double(bBri),'centroid','area','PixelList','MeanIntensity');
         for ii = 1:length(CC)
             CC(ii).id = UID;
             CC(ii).Tid = UID;
             CC(ii).time = t;
             CC(ii).Bound = B{ii};
+            CC(ii).MitoScore = CC(ii).MeanIntensity;
+            CC(ii).Label = 0;
             UID = UID +1;
         end
-
+       CC = rmfield(CC,'MeanIntensity');
         cells{t} = CC;
     end 
+    
+    cellsOut = vertcat(cells{:});
 end 
 
 

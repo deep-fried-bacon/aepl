@@ -7,7 +7,7 @@
 function ExportTrackStatsSmall(Cells,Dims,filePath)
 fprintf(1,'\tMaking csv files\n')
 
-writesql = 1;
+writesql = 0;
 
 %%
 %     [P,F,~] = fileparts(Name);
@@ -17,10 +17,8 @@ writesql = 1;
 %     end
 %     XlsName = fullfile(P2,[F,'.csv']);
 
-AllSegs = vertcat(Cells{:});
-
 Mat = {};
-numcell = size(AllSegs,1);
+numcell = size(Cells,1);
 
 Mat(1,1) = {'Cell ID'};
 Mat(1,2) = {'x(Pixel Position)'};
@@ -28,15 +26,17 @@ Mat(1,3) = {'y(Pixel Position)'};
 Mat(1,4) = {'Area(pixels^2)'};
 Mat(1,5) = {'Time(Frame Num)'};
 Mat(1,6) = {'Track ID'};
+Mat(1,7) = {'Label'};
 
-Cents = vertcat(AllSegs.Centroid);
+Cents = vertcat(Cells.Centroid);
 
-Mat(2:numcell+1,1) = num2cell([AllSegs.id]);
+Mat(2:numcell+1,1) = num2cell([Cells.id]);
 Mat(2:numcell+1,2) = num2cell(Cents(:,1));
 Mat(2:numcell+1,3) = num2cell(Cents(:,2));
-Mat(2:numcell+1,4) = num2cell([AllSegs.Area]);
-Mat(2:numcell+1,5) = num2cell([AllSegs.time]);
-Mat(2:numcell+1,6) = num2cell([AllSegs.Tid]);
+Mat(2:numcell+1,4) = num2cell([Cells.Area]);
+Mat(2:numcell+1,5) = num2cell([Cells.time]);
+Mat(2:numcell+1,6) = num2cell([Cells.Tid]);
+Mat(2:numcell+1,7) = num2cell([Cells.Label]);
 %%
 T = cell2table(Mat);
 

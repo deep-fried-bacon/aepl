@@ -4,39 +4,40 @@
 %
 
 
-function [Segs,Edges] = getTracks(Segs,dims)
+function [SegsOut,Edges] = getTracks(Segs,dims)
 fprintf(1,'\tGetting Tracks from segmentation\n')
 
-Edges = cell(1,length(Segs));
+maxT = max([Segs.time]);
 
-Tracks = [];
-for t = 1:length(Segs)
-    newTracks =  [[Segs{t}.id];[Segs{t}.time]]';
-    Tracks = [Tracks;newTracks];
-end
+Edges = cell(1,maxT);
+
+ids = vertcat(Segs.id);
+times = vertcat(Segs.time);
 
 TimeWindow = 10;
+MaxDist = 200;
 
-for t = 1:length(Segs)-1
+
+for t = 1:maxT-1
     TakenA = 0;
     TakenB = 0;
     
-    T0 = Segs{t};
-    Trange = t+1:min(  t+TimeWindow , length(Segs));
+    T0 = Segs(times==t);
+    Trange1 = t+1;
+    Trange2 = min(t+TimeWindow , length(Segs));
     
-    T1 = vertcat(Segs{Trange});
+    T1 = Segs(times>= Trange1 & times <= Trange2);
     
-    Edges{t} = MakeEdgeT(T0,T1,Tracks,dims,100);
+    Edges{t} = MakeEdgeT(T0,T1,[ids,times],dims,MaxDist);
 end
 
 EdgesT = vertcat(Edges{:});
 [~,idx] = sort(EdgesT(:,3),1);
 SortT = EdgesT(idx,:);
 
-SegVect  = vertcat(Segs{:});
+SegVect  = Segs;
 TrackVect = [SegVect.id;SegVect.Tid]';
 %% Assign Tracks
-
 
 for ii = 1:size(SortT,1)
     
@@ -60,18 +61,15 @@ for ii = 1:size(SortT,1)
     TrkB = TrackVect(TrackVect(:,1)==id1,2);
     
     TrackVect(TrackVect(:,2)==TrkB,2) = TrkA;
-
+    
 end
 
-for i = 1:length(Segs)
-    S = Segs{i};
-    for ii = 1:length(S)
-        sid = S(ii).id;
-        Tid = TrackVect(TrackVect(:,1)==sid,2);
-        S(ii).Tid = Tid;
-    end 
-    Segs{i}=S;
-end 
+SegsOut = Segs;
+for ii = 1:length(Segs)
+    sid = Segs(ii).id;
+    Tid = TrackVect(TrackVect(:,1)==sid,2);
+    SegsOut(ii).Tid = Tid;
+end
 
 end
 %%
@@ -100,7 +98,7 @@ for i = 1:length(T0)
         
         dist = dist/maxDist;
         deltaT = abs(C1.time - C2.time);
-        dist = dist + StartTime*deltaT;
+        dist = dist + 2*StartTime*deltaT;
         %% Add Match to List
         EdgeList(idx,:) = [C1.id,C2.id,dist];
         idx = idx+1;

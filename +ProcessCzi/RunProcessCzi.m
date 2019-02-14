@@ -9,6 +9,7 @@ function RunProcessCzi(experPath)
 
     %% Add MATLAB Utilities for BioFormats 
     addpath('./Utilities/src/MATLAB')
+    
     if ~exist('experPath','var')
         experPath = uigetdir();
     end
@@ -30,12 +31,16 @@ function RunProcessCzi(experPath)
     
     %% intialize exper
     exper = struct();
-    exper.czi = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
+   
+   exper.czi = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
+   if isempty(exper.czi)
+   exper.czi = dir(fullfile(experPath,['*.tif']));
+   end 
     %exper.frameCount = 0;
     
     for w = 1:length(exper.czi) 
         
-        try 
+%         try 
             %% parse name
             wellFile = exper.czi(w).name;
             temp = strsplit(wellFile,'.');
@@ -43,7 +48,6 @@ function RunProcessCzi(experPath)
 
             wellName = temp{end};
 
-            
             %% initialize paths for saving well data
             wellTifSavePath = fullfile(tifSaveDir,strcat(wellName,'.tif'));
             
@@ -66,7 +70,6 @@ function RunProcessCzi(experPath)
                 toc
                
                 
-                
                 %% The heavy lifting - segment (or process) the image (series)
                 tic
                 [cells] = ProcessCzi.SegIms(im);
@@ -74,38 +77,35 @@ function RunProcessCzi(experPath)
                 toc
 
                 %% from the raw data about every segmented cell from every frame,
-                %   get tracks for each cell over all frames
-                %       (I'm not sure if the matching up of cells from frame to
-                %       frame happens in SegIms and is recorded or is actually
-                %       done in GetTracks, I think the former because GetTracks
-                %       doesn't take the image itself)
-                
+                %   get tracks for each cell over all frames                
                 tic
                 [cells2,edges] = ProcessCzi.getTracks(cells,imdim);
                 fprintf(1,'\t\t')
                 toc
 
-                
                 %% Create the annotated tifs
                 %   important for manual validation and checking
                 %   takes about 20 sec per well
                 %   wells take about 40 sec total 
                 
-
+                
+                [cells2] = ProcessCzi.AnalyzeCells(cells2);
+                
+                
                 tic
                 ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath) 
                 %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
                 fprintf(1,'\t\t')
                 toc
-                
+               
                 %% Save (x, y) coords in csv
                 %   I do this after DrawTracks because I use this as the
                 %   test for whether or not a well has already been run,
                 %   and DrawTracks is more likely to fail
                 tic
-                
+               
                 %ProcessCzi.ExportTrackStats(cells2,imdim,wellCsvSavePath)
-                ProcessCzi.ExportTrackStatsSmall(cells2,imdim,wellCsvSavePath)
+               ProcessCzi.ExportTrackStatsSmall(cells2,imdim,wellCsvSavePath)
                 fprintf(1,'\t\t')
                 toc
 
@@ -114,23 +114,19 @@ function RunProcessCzi(experPath)
             end
             
             
-        catch e
-            fprintf(2,wellName)
-            fprintf(2," exception: " + getReport(e)+"\n")
-            
-            
-            
-            s = {{[experPath,':']}, join({wellName,'failed'}), join({'exception:', getReport(e)})};
-            % sendmail('brown.amelia@gmail.com','Update from matlab: RunProcessCzi',[s{:}])
-            fprintf(2, "should have email\n")
-            fprintf(2, datestr(datetime('now')) + "\n")
-
-        
-        end
+%         catch e
+%             fprintf(2,wellName)
+%             fprintf(2," exception: " + getReport(e)+"\n")
+%                         
+%             s = {{[experPath,':']}, join({wellName,'failed'}), join({'exception:', getReport(e)})};
+%             % sendmail('brown.amelia@gmail.com','Update from matlab: RunProcessCzi',[s{:}])
+%             fprintf(2, "should have email\n")
+%             fprintf(2, datestr(datetime('now')) + "\n")
+% 
+%         
+%         end
         
     end
-    
-    
     
     %sendmail('brown.amelia@gmail.com','Matlab Finished: RunProcessCzi')
 
