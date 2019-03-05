@@ -21,8 +21,10 @@ function [cellsOut] = SegIms(im)
     for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
 
         [imBW,bBri] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
-
+ 
         imBW = SplitLargeAreas(imBW);
+
+        %imBW = bwareaopen(imBW,500);
 
         [B] = bwboundaries(imBW,'noholes');
 
@@ -66,33 +68,75 @@ L2 = zeros(size(L));
 if nnz(imBW)==0
     return 
 end 
+
 CellFeats = regionprops(imBW,'Area','PixelList','PixelIdxList');
-LMat = false(size(imBW,1),size(imBW,2),size(imBW,3),3*length(CellFeats));
+LMat = zeros(size(imBW,1),size(imBW,2),size(imBW,3));
 Lmax = 1;
+
 for i = 1:max(L(:))
     k =  round((CellFeats(i).Area/MeanArea));
     if k < 2
         L2(CellFeats(i).PixelIdxList)=Lmax ;
-        LMat(:,:,:,Lmax) = L2==Lmax;
+        LMat = LMat + bwperim(L2==Lmax);
         Lmax = Lmax + 1;
     else
+        
+        idxlist = CellFeats(i).PixelIdxList;
+
+        
+        temp = false(size(imBW,1),size(imBW,2),size(imBW,3));
+        temp(idxlist) = 1;
+        T1 = temp;
+        
+        N = 5;
+        temp = imerode(temp,ones([N,N,1]));
+        
+        N = 10;
+        [r,c] = find(temp);
+        xyList = [r,c];
+        xyList = xyList(1:N:end,:);
+        
+        %%
         try
-            T = kmeans(CellFeats(i).PixelList,k);
+            T = kmeans(xyList,k);
         catch e
             fprintf(2,'kmeans error, I dont know whats causing it')
             fprintf(2,"exception: " + getReport(e)+"\n")
         end
+        
+        Tcent = zeros(max(T(:)),2);
+       
+        %%
         for j = 1:max(T(:))
-            L2(CellFeats(i).PixelIdxList(T==j))=Lmax ;
-            LMat(:,:,:,Lmax) = L2==Lmax;
+        Tcent(j,1) = mean(xyList(T==j,1));
+        Tcent(j,2) = mean(xyList(T==j,2));
+        end 
+        
+        
+        D = bwdistgeodesic(T1, round(Tcent(:,2)), round(Tcent(:,1)));
+        D(~T1) = Inf;
+        L3 = watershed(D,4);
+        L3(~T1) = 0;
+        
+        %[~,I] = pdist2(Tcent(:,[2,1]),CellFeats(i).PixelList,'euclidean','Smallest',1);
+        
+        for j = 1:max(L3(:))
+            
+            L2(L3==j)=Lmax ;
+            LMat = LMat + imdilate(bwperim(L2==Lmax),ones(3,3,1));
             Lmax = Lmax + 1;
         end
+        
+        %%
+%         imagesc(L2);
+%         hold on 
+%         plot(Tcent(:,2),Tcent(:,1),'ko')
+        
+        
     end
 end
 
 %% Seperate Touching Objects
-LMat = imdilate(LMat,ones([3,3,1,1]));
-
-Boundry = sum(LMat,4)>1;
+Boundry = imdilate(LMat>1,ones([3,3,1]));
 L2(Boundry) = false;
 end 

@@ -49,7 +49,6 @@ experPath = f18_09_26;
 
 ProcesCzi(experPath)
 
-deathTest = 'D:\OneDrive\Whitney Images';
 deathTest = 'C:\Users\eac84\OneDrive\Desktop\death_ex_for_edgar\death_ex_for_edgar';
 
 

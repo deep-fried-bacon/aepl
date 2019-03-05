@@ -16,7 +16,7 @@ function RunProcessCzi(experPath)
 
     global CONST
     if isempty(CONST)
-        initConstants
+        ProcessCzi.initConstants
     end 
     %% Make tif dir and csv dir if they don't exist
     tifSaveDir = fullfile(experPath,CONST.ANNOTATED_TIF_DIR);
@@ -32,10 +32,10 @@ function RunProcessCzi(experPath)
     %% intialize exper
     exper = struct();
    
-   exper.czi = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
-   if isempty(exper.czi)
-   exper.czi = dir(fullfile(experPath,['*.tif']));
-   end 
+   dlist = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
+   dlist = [ dlist;dir(fullfile(experPath,['*.tif']))];
+   
+     exper.czi = dlist;
     %exper.frameCount = 0;
     
     for w = 1:length(exper.czi) 
