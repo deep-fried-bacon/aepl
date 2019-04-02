@@ -15,7 +15,7 @@ function [cellsOut] = SegIms(im)
     im = im - imf;
 %     im = permute(medfilt3(permute(im,[1 2 5 4 3]),[3,3,3]),[1 2 5 4 3]);
     %%
-    for t = 1:5:size(im,5)        % for frames     [x,y,c,s,t]?
+    for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
 
         [imBW,bBri] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
  
