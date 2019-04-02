@@ -27,6 +27,7 @@ Mat(1,4) = {'Area(pixels^2)'};
 Mat(1,5) = {'Time(Frame Num)'};
 Mat(1,6) = {'Track ID'};
 Mat(1,7) = {'Label'};
+Mat(1,8) = {'wasSplit'};
 
 Cents = vertcat(Cells.Centroid);
 
@@ -37,6 +38,7 @@ Mat(2:numcell+1,4) = num2cell([Cells.Area]);
 Mat(2:numcell+1,5) = num2cell([Cells.time]);
 Mat(2:numcell+1,6) = num2cell([Cells.Tid]);
 Mat(2:numcell+1,7) = num2cell([Cells.Label]);
+Mat(2:numcell+1,7) = num2cell([Cells.wasSplit]);
 %%
 T = cell2table(Mat);
 
