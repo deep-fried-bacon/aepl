@@ -30,6 +30,7 @@ CONST.SET_LAEOUT = [2, 3];    % [rows, columns]
 CONST.CONTROL = 'DMSO .1%';
 CONST.TEMP_PDF = 'temp.pdf';
 
+CONST.RHT_SUF = '.rht';
 
 
 %% experiment folder names - for now is the folder with all the czi files

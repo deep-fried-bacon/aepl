@@ -32,7 +32,7 @@ end
 %% intialize exper
 exper = struct();
 
-dlist = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
+dlist = dir(fullfile(experPath,CONST,['*',CONST.CZI_SUF]));
 dlist = [ dlist;dir(fullfile(experPath,['*.tif']))];
 
 exper.czi = dlist;

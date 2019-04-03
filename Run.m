@@ -23,6 +23,8 @@
     CONST.SET_LAEOUT = [2, 3];    % [rows, columns
     CONST.CONTROL = 'DMSO .1%';
 
+    
+    CONST.RHT_SUF = '.rht';
 
 f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
 f17_06_28 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/';

@@ -3,6 +3,8 @@
 %   I've made a fair amount of changes
 %
 
+addpath('.')
+
 function DrawTracks2(im,Segs,fName)
 fprintf(1,'\tDrawing tracks and saving to tif 2\n')
 ugh = 0;
