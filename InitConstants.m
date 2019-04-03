@@ -1,11 +1,8 @@
-    
-
-global CONST
-CONST = struct();
-
-function InitConstants()
+% function InitConstants()
+    disp('this one')
     global CONST
     CONST = struct();
+    
     CONST.PLATE_MAP_SUF = '_plate-map.csv';
     CONST.CZI_SUF = '.czi';
     CONST.CONDIT_DATA_SUF = '-veloc-conditions.csv';
@@ -16,7 +13,7 @@ function InitConstants()
     CONST.MEDI_PREF = 'Median';
 
 
-    CONST.CZI_DIR = '';
+    CONST.CZI_DIR = 'Czi';
     CONST.CSV_DIR = 'Csv';
     CONST.PROCESSED_DIR = 'ProcessedData';
     CONST.ANNOTATED_TIF_DIR = 'TifsWithTracks';
@@ -33,4 +30,5 @@ function InitConstants()
 
     CONST.RHT_SUF = '.rht';
     
-end
+    
+% end

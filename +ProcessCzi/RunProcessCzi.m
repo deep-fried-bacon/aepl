@@ -15,14 +15,17 @@ if ~exist('experPath','var')
 end
 
 global CONST
-if isempty(CONST)
-    ProcessCzi.initConstants
-end
+% disp(CONST)
+% if isempty(CONST)
+%     InitConstants
+% %     CONST
+% end
 %% Make tif dir and csv dir if they don't exist
 tifSaveDir = fullfile(experPath,CONST.ANNOTATED_TIF_DIR);
 if ~exist(tifSaveDir,'dir')
     mkdir(tifSaveDir)
 end
+
 
 csvSaveDir = fullfile(experPath,CONST.CSV_DIR);
 if ~exist(csvSaveDir,'dir')
@@ -32,13 +35,16 @@ end
 %% intialize exper
 exper = struct();
 
-dlist = dir(fullfile(experPath,CONST,['*',CONST.CZI_SUF]));
-dlist = [ dlist;dir(fullfile(experPath,['*.tif']))];
+% disp(CONST.CZI_DIR)
+cziPath = fullfile(experPath,CONST.CZI_DIR);
+dlist = dir(fullfile(cziPath,['*',CONST.CZI_SUF]));
+dlist = [ dlist;dir(fullfile(cziPath,['*.tif']))];
 
 exper.czi = dlist;
+
 %exper.frameCount = 0;
 
-for w = 1:length(exper.czi)
+for w = 60:length(exper.czi)
     
     %         try
     %% parse name
@@ -68,7 +74,7 @@ for w = 1:length(exper.czi)
     
     %% Open and load Image
     tic
-    [im,imd] =  MicroscopeData.Original.ReadData(experPath,wellFile);
+    [im,imd] =  MicroscopeData.Original.ReadData(cziPath,wellFile);
     imdim = size(im);
     fprintf(1,'\t\t')
     toc
