@@ -38,7 +38,7 @@ Mat(2:numcell+1,4) = num2cell([Cells.Area]);
 Mat(2:numcell+1,5) = num2cell([Cells.time]);
 Mat(2:numcell+1,6) = num2cell([Cells.Tid]);
 Mat(2:numcell+1,7) = num2cell([Cells.Label]);
-Mat(2:numcell+1,7) = num2cell([Cells.wasSplit]);
+Mat(2:numcell+1,8) = num2cell([Cells.wasSplit]);
 %%
 T = cell2table(Mat);
 
