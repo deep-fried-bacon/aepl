@@ -20,7 +20,7 @@ saveframe  = 1;
 
 % Fr = cell(1,size(im,3));
 %h = figure('Visible', 'off');
-h = figure();
+h = figure('position',[0 0 1600 700]);
 for i = 1:size(im,3)
     clf(h,'reset')
     %set(h, 'Visible', 'off')
@@ -31,7 +31,10 @@ for i = 1:size(im,3)
     % put break on next line to step through outlined cells
     TTracks = [Tsegs.Tid];
     
-    imagesc(im(:,:,i))
+    imt = im(:,:,i);
+    imt = imadjust(mat2gray(imt));
+    
+    imagesc([imt,imt])
     colormap gray
     Axis = gca;
     Axis.Position = [0 ,0, 1, 1];
@@ -43,9 +46,13 @@ for i = 1:size(im,3)
         
         pts = vertcat(Tsegs(ii).Bound);
         cid = mod(TTracks(ii),64)+1;
-        plot(pts(:,2),pts(:,1),'-','Color',cmap(cid,:))
+        
         cent = Tsegs(ii).Centroid;
 
+        xs = size(imt,1);
+        cent(1) = cent(1)+xs;
+        
+        plot(pts(:,2)+xs,pts(:,1),'-','Color',cmap(cid,:))
         text(cent(1),cent(2),num2str(Tsegs(ii).Tid),'Color',cmap(cid,:),'FontSize',10)
         
         if Tsegs(ii).Label==1
