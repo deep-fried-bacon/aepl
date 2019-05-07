@@ -8,7 +8,7 @@ function RunProcessCzi(experPath)
 disp('Starting RunProcessCzi')
 
 %% Add MATLAB Utilities for BioFormats
-addpath('./Utilities/src/MATLAB')
+addpath('./Utilities/src/MATLAB') 
 
 if ~exist('experPath','var')
     experPath = uigetdir();
@@ -50,10 +50,8 @@ for w = 1:length(exper.czi)
     
     %% initialize paths for saving well data
     wellTifSavePath = fullfile(tifSaveDir,strcat(wellName,'.tif'));
-    
     % used when doing one frame and DrawTracks2
     % wellTifSavePath2 = fullfile(tifSaveDir,strcat(wellName,'_.tif'));
-    
     wellCsvSavePath = fullfile(csvSaveDir,strcat(wellName,'.csv'));
     
     %% Process well czi
@@ -64,7 +62,6 @@ for w = 1:length(exper.czi)
     end
     
     disp(['Starting well ',wellName]);
-    
     
     %% Open and load Image
     tic
@@ -78,7 +75,6 @@ for w = 1:length(exper.czi)
     [cells] = ProcessCzi.SegIms(im);
     fprintf(1,'\t\t')
     toc
-    
     %% from the raw data about every segmented cell from every frame,
     %   get tracks for each cell over all frames
     tic
@@ -92,7 +88,6 @@ for w = 1:length(exper.czi)
     %   wells take about 40 sec total
     [cells2] = ProcessCzi.AnalyzeCells(cells2);
     
-    
     tic
     ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath)
     %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
@@ -104,7 +99,6 @@ for w = 1:length(exper.czi)
     %   test for whether or not a well has already been run,
     %   and DrawTracks is more likely to fail
     tic
-    
     %ProcessCzi.ExportTrackStats(cells2,imdim,wellCsvSavePath)
     ProcessCzi.ExportTrackStatsSmall(cells2,imdim,wellCsvSavePath)
     fprintf(1,'\t\t')
@@ -128,8 +122,6 @@ end
 
 try
     %[exper,condits] = ReadCsvAsCondits(experPath);
-    
-    
     SummarizeData.RunSummarizeData(experPath)
 catch
     

@@ -52,7 +52,7 @@ for i = 1:size(im,3)
         xs = size(imt,1);
         cent(1) = cent(1)+xs;
         
-        plot(pts(:,2)+xs,pts(:,1),'-','Color',cmap(cid,:))
+        plot(pts(:,2)+xs,pts(:,1),'-','Color',cmap(cid,:),'LineWidth',3)
         text(cent(1),cent(2),num2str(Tsegs(ii).Tid),'Color',cmap(cid,:),'FontSize',10)
         
         if Tsegs(ii).Label==1
