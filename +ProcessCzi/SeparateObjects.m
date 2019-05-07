@@ -12,6 +12,11 @@ CellFeats = regionprops(imBW,'Area','PixelList','PixelIdxList');
 LMat = zeros(size(imBW,1),size(imBW,2),size(imBW,3));
 Lmax = 1;
 
+
+N = 3;
+Erode = imerode(imBW,ones([N,N,1]));
+
+Cent = [];
 for i = 1:max(L(:))
     k =  round((CellFeats(i).Area/MeanArea));
     if k < 2
@@ -26,10 +31,8 @@ for i = 1:max(L(:))
         temp = false(size(imBW,1),size(imBW,2),size(imBW,3));
         temp(idxlist) = 1;
         T1 = temp;
-        
-        N = 5;
-        temp = imerode(temp,ones([N,N,1]));
-        
+        T1 = T1&Erode;
+
         N = 10;
         [r,c] = find(temp);
         xyList = [r,c];
@@ -44,38 +47,38 @@ for i = 1:max(L(:))
         end
         
         Tcent = zeros(max(T(:)),2);
-       
         %%
         for j = 1:max(T(:))
         Tcent(j,1) = mean(xyList(T==j,1));
         Tcent(j,2) = mean(xyList(T==j,2));
         end 
         
+        Cent = [Cent;Tcent];
+    end  
+end 
         
-        D = bwdistgeodesic(T1, round(Tcent(:,2)), round(Tcent(:,1)));
-        D(~T1) = Inf;
-        L3 = watershed(D,4);
-        L3(~T1) = 0;
+        D = bwdistgeodesic(imBW, round(Cent(:,2)), round(Cent(:,1)));
+        D(~imBW) = Inf;
+        L3 = watershed(D,8);
+        L3(~imBW) = 0;
         
         %[~,I] = pdist2(Tcent(:,[2,1]),CellFeats(i).PixelList,'euclidean','Smallest',1);
         
-        for j = 1:max(L3(:))
-            
-            L2(L3==j)=Lmax ;
-            LMat = LMat + imdilate(bwperim(L2==Lmax),ones(3,3,1));
-            Lmax = Lmax + 1;
-        end
+% %         for j = 1:max(L3(:))
+% %             
+% %             L2(L3==j)=Lmax ;
+% %             LMat = LMat + imdilate(bwperim(L2==Lmax),ones(3,3,1));
+% %             Lmax = Lmax + 1;
+% %         end
         
         %%
 %         imagesc(L2);
 %         hold on 
 %         plot(Tcent(:,2),Tcent(:,1),'ko')
-        
-        
-    end
-end
 
-%% Seperate Touching Objects
-Boundry = imdilate(LMat>1,ones([3,3,1]));
-L2(Boundry) = false;
+L2 = L3;
+
+% %% Seperate Touching Objects
+% Boundry = imdilate(LMat>1,ones([3,3,1]));
+% L2(Boundry) = false;
 end 
