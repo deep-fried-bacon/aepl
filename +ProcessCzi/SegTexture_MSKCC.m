@@ -11,19 +11,27 @@ showPlot = true;
 if isempty(I)
     return 
 end 
+
+Disk7 = strel('disk',7);
+Disk3 = strel('disk',3);
+Disk10 = strel('disk',10);
+
+MaxArea = 1500;
+MinArea = 600;
+MinArea2 = 50;
+
 %% Segment
  I1 = mat2gray(I);
-% filtWind = max(round(size(I)/5),1);
-% I1 = mat2gray(I - imgaussfilt(I,filtWind));
-
-Igrad1 = mat2gray(imgradient(I1));
-%    gxcjgx = imclose(Igrad0,strel('disk',5)); 
-Igrad1 = imopen(Igrad1,strel('disk',7));
-
-% Igrad0 = mat2gray(Igrad0 - imgaussfilt(Igrad0,filtWind));
+ 
+Igrad1 = I1;
+Igrad1 = imresize(Igrad1 ,0.5);
+Igrad1 = mat2gray(imgradient(Igrad1));
+Igrad1 = imopen(Igrad1,Disk3);
 Igrad1 = imadjust(Igrad1);
-Igrad1 = mat2gray(imgaussfilt(Igrad1,3));
-%  Igrad1 = mat2gray(Igrad0 );
+Igrad1 = imresize(Igrad1,size(I1));
+Igrad1 = mat2gray(Igrad1);
+
+
 %% Seg Gradient 
 % 
 I2 = Igrad1;
@@ -33,7 +41,7 @@ Imed = counts(h==max(h));
 Imed = Imed(1);
 
 %% 
-testHigh = counts(h < (max(h)*0.2));
+testHigh = counts(h < (max(h)*0.1));
 testHigh = min(testHigh(testHigh > Imed));
 thresh = [0,testHigh];
 
@@ -48,10 +56,9 @@ thresh = [0,testHigh];
 
 imBW = I2 >= thresh(2);
 
-imBW = imclose(imBW,strel('disk',3)); 
-imBW = imopen(imBW,strel('disk',3));
-
-imBW = imerode(imBW,ones(10));
+imBW = imclose(imBW,Disk3); 
+imBW = imopen(imBW,Disk3);
+imBW = imerode(imBW,Disk7);
 
 
 %% Find the Edges that separate the cells 
@@ -61,78 +68,49 @@ I = I/std(I(:));
 I = min(I,9);
 I = max(I,-9);
 
-bD = I<-3;
-bD = uint8(bD) + uint8(bwareaopen(bD,50));
-bD = bD & ~imopen(bD,strel('disk',10));
+bD = I<-1.5;
+bD = bwareaopen(bD,MinArea2);
+bD = bD & ~imopen(bD,Disk7);
 
+% bL = I>4;
+% bL = bwareaopen(bL,MinArea2);
+% bL = bL & ~imopen(bL,Disk10);
 
-bL = I>3;
-bL = bwareaopen(bL,50);
-bL = bL & ~imopen(bL,strel('disk',10));
+bE = bD;
 
-bE = bD | bL;
-
-bE = bwareaopen(bE,50);
+bE = bwareaopen(bE,MinArea2*2);
 
 %% Mitotic
-bBright = I>4;
-bBright = bwareaopen(bBright,50);
-bBright = imclose(bBright,strel('disk',3));
-bBright = bwareaopen(bBright,90);
-bBright = imopen(bBright,strel('disk',2));
-bBright = imdilate(bBright,strel('disk',5));
+bBright = I>3;
+bBright(1:50,1:50) = 0;
+bBright = bwareaopen(bBright,MinArea2);
+bBright = imclose(bBright,Disk3);
+bBright = imopen(bBright,Disk3);
 
-bBrtE = imdilate(bBright,strel('disk',10))& ~bBright;
+bBright = bwareaopen(bBright,MinArea2*2);
+bBright = imdilate(bBright,Disk3);
 
+bBrtE = imdilate(bBright,Disk7)& ~bBright;
 
-%% 
+%% Remove to make final Binary image 
 
 bE = bE & ~bBright;
 
 imBW = imBW & ~bBrtE;
 
-imBWbig = bwareaopen(imBW,20000);
+imBWbig = bwareaopen(imBW,MaxArea);
 imBWsml = imBW & ~imBWbig;
 imBW = imBWsml | (imBWbig & ~bE);
 
+imBW = bwareaopen(imBW,MinArea);
 
-imBWFinal = bwareaopen(imBW,500) | bBright;
+imBWFinal = imBW | bBright;
 
 %%  Show Segmentation
 if showPlot
-    subplot(2,3,1)
-    histogram(Igrad1(:))
-    hold on
     
-
-    hold off
-%     
-    subplot(2,3,4)
-    imagesc(Igrad1)
-    colormap jet
-    
-    subplot(2,3,[2,3,5,6])
-    Icolor = repmat(imadjust(mat2gray(I1)),[1 1 3]);
-    bI = double(imBW)*0.5;
-    bI2 =  double(bBright)*0.5;
-    color = [1 -1 -1];
-    for i = 1:3
-    Icolor(:,:,i) = Icolor(:,:,i) +  0.5*double(bI)*color(i);
-    end 
-    
-    color = [-1 1 -1];
-    for i = 1:3
-    Icolor(:,:,i) = Icolor(:,:,i) +  0.5*double(bI2)*color(i);
-    end 
-    
-    color = [-1 -1 1];
-    for i = 1:3
-    Icolor(:,:,i) = Icolor(:,:,i) +  0.5*double(bE)*color(i);
-    end 
-    
-    imagesc(Icolor)
-    
-    drawnow  
+    I3 = cat(3,imBW,bE,bBright);
+    ProcessCzi.Plot6(Igrad1,testHigh,h,I,I1,I3)
 end
 
 end
