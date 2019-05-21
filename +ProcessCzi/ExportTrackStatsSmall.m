@@ -28,6 +28,7 @@ Mat(1,5) = {'Time(Frame Num)'};
 Mat(1,6) = {'Track ID'};
 Mat(1,7) = {'Label'};
 Mat(1,8) = {'wasSplit'};
+Mat(1,9) = {'EdgeCost'};
 
 Cents = vertcat(Cells.Centroid);
 
@@ -39,6 +40,7 @@ Mat(2:numcell+1,5) = num2cell([Cells.time]);
 Mat(2:numcell+1,6) = num2cell([Cells.Tid]);
 Mat(2:numcell+1,7) = num2cell([Cells.Label]);
 Mat(2:numcell+1,8) = num2cell([Cells.wasSplit]);
+Mat(2:numcell+1,9) = num2cell([Cells.Edge]);
 %%
 T = cell2table(Mat);
 

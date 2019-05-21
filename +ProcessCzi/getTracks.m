@@ -34,21 +34,27 @@ SortT = EdgesT(idx,:);
 
 SegVect  = Segs;
 TrackVect = [SegVect.id;SegVect.Tid]';
+EdgeVect = NaN(length(Segs),1);
 %% Assign Tracks
 
 BTaken = false(length(TrackVect),1);
 ATaken = false(length(TrackVect),1);
 
 for i = 1:size(SortT,1)
-    bA = TrackVect(:,1)==SortT(i,2);
-    bB = TrackVect(:,1)==SortT(i,1);
+    
+    bDes = TrackVect(:,2)==SortT(i,2);
+    bSrc = TrackVect(:,1)==SortT(i,1);
     
     
     if BTaken(SortT(i,2)) || ATaken(SortT(i,1))
         %if ismember(SortT(i,2),BTaken) || ismember(SortT(i,1),ATaken)
-
+        
     else
-        TrackVect(bA,2) = TrackVect(bB,2);
+        
+        
+        
+        TrackVect(bDes,2) = TrackVect(bSrc,2);
+        EdgeVect(bSrc) = SortT(i,3);
         %     ATaken = [ATaken,SortT(i,1)];
         %     BTaken = [BTaken,SortT(i,2)];
         
@@ -83,25 +89,30 @@ end
 % % end
 
 SegsOut = Segs;
+
 for ii = 1:length(Segs)
     sid = Segs(ii).id;
     Tid = TrackVect(TrackVect(:,1)==sid,2);
+    Eval = EdgeVect(TrackVect(:,1)==sid,1);
+    
+    SegsOut(ii).Edge = Eval;
+    
     SegsOut(ii).Tid = Tid;
 end
 
-if 0 
-% plot
-f = figure;
-T = [SegsOut.Tid];
-for i = 1:max(T)
-    bT = T==i;
-    if nnz(bT)==0; continue; end
-    pts = vertcat(SegsOut(bT).Centroid);
-    plot(pts(:,1),pts(:,2))
-    hold on
+if 0
+    % plot
+    f = figure;
+    T = [SegsOut.Tid];
+    for i = 1:max(T)
+        bT = T==i;
+        if nnz(bT)==0; continue; end
+        pts = vertcat(SegsOut(bT).Centroid);
+        plot(pts(:,1),pts(:,2))
+        hold on
+    end
+    close(f)
 end
-close(f)
-end 
 
 end
 %%
@@ -130,12 +141,14 @@ for i = 1:length(T0)
         
         dist = 2*dist/(C1.Area + C2.Area);
         
-        deltaT = abs(C1.time - C2.time);
+        deltaT = abs(C1.time - C2.time)-1;
         
         %         Sdist = 2 * abs(C1.Area - C2.Area) / (C1.Area + C2.Area);
         %
         %         Edist = sqrt(dist^2 + Sdist^2);
-        Edist = dist + 2*StartTime*deltaT;
+        %         Edist = dist + 2*StartTime*deltaT;
+        Edist = dist + deltaT;
+        
         %% Add Match to List
         EdgeList(idx,:) = [C1.id,C2.id,Edist];
         idx = idx+1;

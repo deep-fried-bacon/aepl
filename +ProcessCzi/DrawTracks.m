@@ -22,10 +22,11 @@ counts = hist(AllTracks,Tracks);
 %%
 
 Fr = {};
+h = figure('position',[0 0 1600 700]);
+
 
 if 1
     % plot
-    h = figure('position',[0 0 1600 700]);
     
     imt = im(:,:,1);
     imt = imadjust(mat2gray(imt));
@@ -36,7 +37,7 @@ if 1
     T = [Segs.Tid];
     for i = 1:max(T)
         
-        if counts(Tracks==i)<10
+        if counts(Tracks==i)<5
             continue
         end
         bT = T==i;
@@ -52,11 +53,9 @@ if 1
     
     F = getframe(h);
     Fr{end+1} = F.cdata;
+        
+    clf()
     
-    close(h)
-    
-    
-    h = figure('position',[0 0 1600 700]);
     ax1 = axes('Position',[0.05 0.05 0.45 0.9]);
     ylabel('Time')
     title('X')
@@ -67,7 +66,7 @@ if 1
     T = [Segs.Tid];
     for i = 1:max(T)
         
-        if counts(Tracks==i)<5
+        if counts(Tracks==i)<1
             continue
         end
         
@@ -89,9 +88,7 @@ if 1
     
     F = getframe(h);
     Fr{end+1} = F.cdata;
-    
-    close(h)
-    
+       
 end
 
 
@@ -103,7 +100,7 @@ end
 
 
 %h = figure('Visible', 'off');
-h = figure('position',[0 0 1600 700]);
+% h = figure('position',[0 0 1600 700]);
 for i = 1:size(im,3)
     clf(h,'reset')
     %set(h, 'Visible', 'off')
@@ -157,6 +154,8 @@ for i = 1:size(im,3)
     
     
 end   
+close(h)
+
 
 firstRound = 1;
 for i = 1:length(Fr)
@@ -170,9 +169,7 @@ for i = 1:length(Fr)
             imwrite(Fr{i},fName,'WriteMode','append')
         end
     end    
-    %close(h)
+    %
 end
-
-close(h)
 
 end
