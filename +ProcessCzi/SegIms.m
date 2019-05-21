@@ -2,8 +2,9 @@
 %       from Epl
 %       little to no changes on my part
 %
-function [cellsOut] = SegIms(im)
+function [cellsOut] = SegIms(im,DrawPlot)
 fprintf(1,'\tSegmenting Images\n')
+%%
 
 cells = cell(1,size(im,5));
 UID = 1;
@@ -16,9 +17,11 @@ im = im - imf;
 %     im = permute(medfilt3(permute(im,[1 2 5 4 3]),[3,3,3]),[1 2 5 4 3]);
 %%
 for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
-%for t = randi(size(im,5)) 
+    %for t = randi(size(im,5))
     
-    [imBW,bBri] = ProcessCzi.SegTexture_MSKCC(im(:,:,1,1,t));
+    
+    I1 = im(:,:,1,1,t);
+    [imBW,bBri] = ProcessCzi.SegTexture_MSKCC(I1,DrawPlot);
     
     imBWs = imresize(imBW,0.5);
     L1 = ProcessCzi.SplitLargeAreas(imBWs);
@@ -26,8 +29,9 @@ for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
     imBW = L1>0;
     imBW = bwareaopen(imBW,200);
     
-    %% 
-    if 1
+    %%
+    if DrawPlot
+        
         subplot(2,3,6)
         
         LC = mat2gray(label2rgb(bwlabeln(L1),'jet','k','shuffle'));
@@ -43,12 +47,14 @@ for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
     end
     
     
-    %% 
+    %%
     
     [B] = bwboundaries(imBW,'noholes');
     
     CC = regionprops(imBW,double(bBri),'centroid','area','PixelList','MeanIntensity');
     CC2 = regionprops(imBW,double(L1),'MeanIntensity');
+    
+    
     for ii = 1:length(CC)
         CC(ii).id = UID;
         CC(ii).Tid = UID;
@@ -59,7 +65,9 @@ for t = 1:size(im,5)        % for frames     [x,y,c,s,t]?
         CC(ii).wasSplit = round( CC2(ii).MeanIntensity);
         UID = UID +1;
     end
+    
     CC = rmfield(CC,'MeanIntensity');
+
     cells{t} = CC;
 end
 

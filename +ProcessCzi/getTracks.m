@@ -18,8 +18,6 @@ TimeWindow = 10;
 MaxDist = 150;
 
 for t = 1:maxT-1
-    TakenA = 0;
-    TakenB = 0;
     
     T0 = Segs(times==t);
     Trange1 = t+1;
@@ -38,43 +36,50 @@ SegVect  = Segs;
 TrackVect = [SegVect.id;SegVect.Tid]';
 %% Assign Tracks
 
-BTaken = [];
-ATaken = [];
+BTaken = false(length(TrackVect),1);
+ATaken = false(length(TrackVect),1);
+
 for i = 1:size(SortT,1)
     bA = TrackVect(:,1)==SortT(i,2);
     bB = TrackVect(:,1)==SortT(i,1);
     
-    if ismember(SortT(i,2),BTaken) || ismember(SortT(i,1),ATaken)
-    else
-    TrackVect(bA,2) = TrackVect(bB,2);
-    ATaken = [ATaken,SortT(i,1)];
-    BTaken = [BTaken,SortT(i,2)];
     
-    end 
-end     
+    if BTaken(SortT(i,2)) || ATaken(SortT(i,1))
+        %if ismember(SortT(i,2),BTaken) || ismember(SortT(i,1),ATaken)
+
+    else
+        TrackVect(bA,2) = TrackVect(bB,2);
+        %     ATaken = [ATaken,SortT(i,1)];
+        %     BTaken = [BTaken,SortT(i,2)];
+        
+        ATaken(SortT(i,1)) = 1;
+        BTaken(SortT(i,2)) = 1;
+        
+    end
+end
 % % for ii = 1:size(SortT,1)
-% %     
+% %
 % %     id0 = SortT(ii,1);
 % %     id1 = SortT(ii,2);
-% %     
+% %
 % %     if id0 == 0; continue; end
-% %     
+% %
 % %     if any(TakenA==id0) || any(TakenB==id1)
 % %         continue
 % %     end
-% %     
+% %
 % %     if id1 < 0 || id0 < 0
 % %         continue
 % %     end
-% %     
+% %
 % %     TakenA = [TakenA,id0];
 % %     TakenB = [TakenB,id1];
-% %     
+% %
 % %     TrkA = TrackVect(TrackVect(:,1)==id0,2);
 % %     TrkB = TrackVect(TrackVect(:,1)==id1,2);
-% %     
+% %
 % %     TrackVect(TrackVect(:,2)==TrkB,2) = TrkA;
-% %     
+% %
 % % end
 
 SegsOut = Segs;
@@ -84,19 +89,21 @@ for ii = 1:length(Segs)
     SegsOut(ii).Tid = Tid;
 end
 
-
+if 0 
 % plot
 f = figure;
 T = [SegsOut.Tid];
 for i = 1:max(T)
     bT = T==i;
-    if nnz(bT)==0; continue; end 
+    if nnz(bT)==0; continue; end
     pts = vertcat(SegsOut(bT).Centroid);
     plot(pts(:,1),pts(:,2))
-    hold on 
+    hold on
 end
 close(f)
 end 
+
+end
 %%
 
 function EdgeList = MakeEdgeT(T0,T1,Tracks,dims,maxDist)
@@ -121,13 +128,14 @@ for i = 1:length(T0)
             continue;
         end
         
-        dist = dist/maxDist;
-
+        dist = 2*dist/(C1.Area + C2.Area);
+        
         deltaT = abs(C1.time - C2.time);
         
-        Sdist = 2 * abs(C1.Area - C2.Area) / (C1.Area + C2.Area);
-        
-        Edist = dist + Sdist + 2*StartTime*deltaT;
+        %         Sdist = 2 * abs(C1.Area - C2.Area) / (C1.Area + C2.Area);
+        %
+        %         Edist = sqrt(dist^2 + Sdist^2);
+        Edist = dist + 2*StartTime*deltaT;
         %% Add Match to List
         EdgeList(idx,:) = [C1.id,C2.id,Edist];
         idx = idx+1;

@@ -23,6 +23,8 @@ tifSaveDir = fullfile(experPath,CONST.ANNOTATED_TIF_DIR);
 if ~exist(tifSaveDir,'dir')
     mkdir(tifSaveDir)
 end
+AeplUtil.labelVersion(tifSaveDir)
+
 
 csvSaveDir = fullfile(experPath,CONST.CSV_DIR);
 if ~exist(csvSaveDir,'dir')
@@ -37,8 +39,10 @@ dlist = [ dlist;dir(fullfile(experPath,['*.tif']))];
 
 exper.czi = dlist;
 %exper.frameCount = 0;
+DrawPlot = CONST.DRAW_MODE;
 
-for w = 1:length(exper.czi)
+
+for w = 1:length(dlist)
     
     %         try
     %% parse name
@@ -72,7 +76,7 @@ for w = 1:length(exper.czi)
     
     %% The heavy lifting - segment (or process) the image (series)
     tic
-    [cells] = ProcessCzi.SegIms(im);
+    [cells] = ProcessCzi.SegIms(im,DrawPlot);
     fprintf(1,'\t\t')
     toc
     %% from the raw data about every segmented cell from every frame,
@@ -88,12 +92,15 @@ for w = 1:length(exper.czi)
     %   wells take about 40 sec total
     [cells2] = ProcessCzi.AnalyzeCells(cells2);
     
+    
+    if DrawPlot
     tic
+    
     ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath)
     %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
     fprintf(1,'\t\t')
     toc
-    
+    end 
     %% Save (x, y) coords in csv
     %   I do this after DrawTracks because I use this as the
     %   test for whether or not a well has already been run,
