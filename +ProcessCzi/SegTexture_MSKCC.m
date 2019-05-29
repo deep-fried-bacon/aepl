@@ -6,7 +6,7 @@
 
 function [imBWFinal,bBright] = SegTexture_MSKCC(I)
 
-showPlot = true;
+showPlot = false;
 
 if isempty(I)
     return 

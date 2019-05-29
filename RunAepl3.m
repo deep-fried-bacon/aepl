@@ -45,32 +45,38 @@ CONST.TEMP_PDF = 'temp.pdf';
 % f17_11_17 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-11-17 all cell lines top hits first run molly and whitney';
 % f17_12_28 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-12-28';
 
+rootFolder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdo Project/Tissue Culture/Timelapse/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30';
 
-rootFolder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)';
+f18_11_07_name = '18-11-07';
+f18_11_07 = fullfile(rootFolder, [f18_11_07_name,'.rht'], 'Czi');
+disp(f18_11_07)
 
-f18_09_18_name = '20180918/movies';
-f18_09_18_folder = fullfile(rootFolder, f18_09_18_name);
 
-
-f18_09_18 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180918/movies';
-
-f18_09_25 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180925 (no good)';
-f18_09_26 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180926';
-f18_09_27 = '/Volumes/baylieslab-4/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180927';
-f18_09_28 =  '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180928';
-f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180929';
-f18_10_03 =  '/Volumes/baylieslab-8/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181003'
-f18_10_23 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181023'
-f18_10_24 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181024/Whitney 10-25'
-f18_11_06 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181106'
-f18_11_09 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181109'
+% rootFolder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)';
+% 
+% f18_09_18_name = '20180918/movies';
+% f18_09_18_folder = fullfile(rootFolder, f18_09_18_name);
+% 
+% 
+% f18_09_18 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180918/movies';
+% 
+% f18_09_25 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180925 (no good)';
+% f18_09_26 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180926';
+% f18_09_27 = '/Volumes/baylieslab-4/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20180927';
+% f18_09_28 =  '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180928';
+% f18_09_29 =  '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20180929';
+% f18_10_03 =  '/Volumes/baylieslab-8/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181003'
+% f18_10_23 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181023'
+% f18_10_24 = '/Volumes/baylieslab-7/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH41/20181024/Whitney 10-25'
+% f18_11_06 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181106'
+% f18_11_09 = '/Volumes/baylieslab-1/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/Post-mycoplasma data (starting 9:18:18)/RH30/20181109'
 %%This is where you put the file name of the czi folder you wan to run. The
 %%WTF is an assigned name whereas anything after the = is the path name.
 %%For every new one just make a new name ie see below
 %fyy_mm_dd = 'folderPathHere';
 
 %% set experPath to the folder you want to run right now from the assigned name above
-experPath = f18_11_09;
+experPath = f18_11_07;
 
 
 
