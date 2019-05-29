@@ -1,7 +1,7 @@
 %% 
 function imBWout = SplitLargeAreas(imBW)
 
-    AreaT = round(numel(imBW)*0.003);
+    AreaT = round(numel(imBW)*0.004);
     AreaT2 = round(numel(imBW)*0.002);
 
     imBWout = uint8(imBW);
@@ -17,4 +17,6 @@ function imBWout = SplitLargeAreas(imBW)
     L = ProcessCzi.SeparateObjects(tooLarge,AreaT2);
 
     imBWout(L>0) = 2;
+    
+    
 end

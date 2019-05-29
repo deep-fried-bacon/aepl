@@ -4,33 +4,37 @@
 %
 
 
-function [imBWFinal,bBright] = SegTexture_MSKCC(I)
+function [imBWFinal,bBright] = SegTexture_MSKCC(Iin,DrawPlot)
 
-showPlot = false;
 
-if isempty(I)
+if isempty(Iin)
+    
+    imBWFinal = [];
+    bBright = [];
+    
     return 
 end 
 
 Disk7 = strel('disk',7);
 Disk3 = strel('disk',3);
-Disk10 = strel('disk',10);
 
 MaxArea = 1500;
 MinArea = 600;
 MinArea2 = 50;
 
 %% Segment
- I1 = mat2gray(I);
+ I1 = mat2gray(Iin);
  
 Igrad1 = I1;
 Igrad1 = imresize(Igrad1 ,0.5);
-Igrad1 = mat2gray(imgradient(Igrad1));
-Igrad1 = imopen(Igrad1,Disk3);
-Igrad1 = imadjust(Igrad1);
+
+Igrad1 = stdfilt(Igrad1);
+%Igrad1 = imgradient(Igrad1);
+% Igrad1 = im2uint8(Igrad1);
+%Igrad1 = imopen(Igrad1,Disk3);
+Igrad1 = imadjust(mat2gray(Igrad1));
 Igrad1 = imresize(Igrad1,size(I1));
 Igrad1 = mat2gray(Igrad1);
-
 
 %% Seg Gradient 
 % 
@@ -57,32 +61,38 @@ thresh = [0,testHigh];
 imBW = I2 >= thresh(2);
 
 imBW = imclose(imBW,Disk3); 
-imBW = imopen(imBW,Disk3);
-imBW = imerode(imBW,Disk7);
+imBW1 = imopen(imBW,Disk3);
+imBW = imerode(imBW1,Disk7);
 
 
 %% Find the Edges that separate the cells 
 I = I1;
 I = I - median(I(:));
+
+% I(~imdilate(imBW,Disk7))=0;
+
 I = I/std(I(:));
 I = min(I,9);
 I = max(I,-9);
 
-bD = I<-1.5;
-bD = bwareaopen(bD,MinArea2);
-bD = bD & ~imopen(bD,Disk7);
+bD = I<-2;
+bD = bwareaopen(bD,10);
+% bD = bD & ~imopen(imclose(bD,Disk7),Disk3);
 
 % bL = I>4;
 % bL = bwareaopen(bL,MinArea2);
 % bL = bL & ~imopen(bL,Disk10);
 
+
 bE = bD;
 
-bE = bwareaopen(bE,MinArea2*2);
-
+bE = bwareaopen(bE,MinArea2);
+bE = imdilate(bE,strel('disk',1));
 %% Mitotic
 bBright = I>3;
-bBright(1:50,1:50) = 0;
+
+bBright(~imBW1) = 0;
+
 bBright = bwareaopen(bBright,MinArea2);
 bBright = imclose(bBright,Disk3);
 bBright = imopen(bBright,Disk3);
@@ -105,12 +115,13 @@ imBW = imBWsml | (imBWbig & ~bE);
 imBW = bwareaopen(imBW,MinArea);
 
 imBWFinal = imBW | bBright;
-
+imBWFinal(1:50,1:50) = 0;
 %%  Show Segmentation
-if showPlot
+if DrawPlot
     
     I3 = cat(3,imBW,bE,bBright);
-    ProcessCzi.Plot6(Igrad1,testHigh,h,I,I1,I3)
+    ProcessCzi.Plot6(Igrad1,testHigh,I,I1,I3)
 end
 
 end
+
