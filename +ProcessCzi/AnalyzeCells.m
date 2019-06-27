@@ -3,46 +3,62 @@ function [cellsOut] = AnalyzeCells(cells)
 TIDs = [cells.Tid];
 CIDs = [cells.id];
 
-for tid = 2:max(TIDs)
+for tid = 1:max(TIDs)
     
   C = cells(TIDs==tid);  
   mitScore = [C.MitoScore];
   mitScore = medfilt1(mitScore,3);
   bMitotic = mitScore>0.07;
 
+  locs = vertcat(C.Centroid);
+  dist = [0;sqrt(sum(   (abs(diff(locs)).^2)  ,2))]';
   %% Got Some Signal 
-if nnz(bMitotic)>3
-    
+  area = [C.Area]; 
    %TrkPrps = regionprops(bMitotic,'area');
     
-   locs = vertcat(C.Centroid);
-   dist = sum(abs(diff(locs)),2);
+cellState = zeros(size(mitScore));  
    
-   isDead = 0; 
+%% Check if Mitotic 
+if nnz(bMitotic)>3   
+
+   bMitotic = bMitotic & ~bwareaopen(bMitotic,10);
+   bDead = bwareaopen(bMitotic,10); 
+  
+   cellState(bMitotic) = 1;
+   cellState(bDead) = 2;
+%%    
+end 
+
+%% Check If Dead 
+   bDead = dist<5;
+   bDead = bwareaopen(bDead,10);
+   bDead = bDead | (area < 500);
+   bDead = bDead | abs(mitScore)>1;
    
-   n1 = max(length(bMitotic)-20,1);
+   bDead = bwareaopen(bDead,20);
    
-   if nnz(bMitotic(n1:end)) > 15; isDead = 1; end 
-   if nnz(bMitotic) > 20; isDead = 2; end 
-   if mean(dist(n1:end)) < 10; isDead = isDead+1; end 
-   
-   if isDead > 1
-       
-      ids = [C(bMitotic).id];
+   cellState(bDead) = 2;
+
+
+%% Check Dead Or Alive Score
+
+if any(cellState)
+%% write Mitotic labels 
+      ids = [C(cellState == 1).id];
       for i = ids
-      cells(CIDs==i).Label = 2;
-      end 
-   else 
-      ids = [C(bMitotic).id];
-      for i = ids   
-      cells(CIDs==i).Label = 1;
+        cells(CIDs==i).Label = 1;
       end 
       
-   end 
+%% write Mitotic labels  
+      ids = [C(cellState == 2).id];
+      for i = ids   
+        cells(CIDs==i).Label = 2;
+      end 
+      
+end 
 
-end  
+end 
 
-end
 cellsOut = cells;
 end 
 

@@ -32,6 +32,8 @@ EdgesT = vertcat(Edges{:});
 [~,idx] = sort(EdgesT(:,3),1);
 SortT = EdgesT(idx,:);
 
+SortT(SortT(:,1)==0 | SortT(:,2)==0,:) = [];
+
 SegVect  = Segs;
 TrackVect = [SegVect.id;SegVect.Tid]';
 EdgeVect = NaN(length(Segs),1);
@@ -45,13 +47,9 @@ for i = 1:size(SortT,1)
     bDes = TrackVect(:,2)==SortT(i,2);
     bSrc = TrackVect(:,1)==SortT(i,1);
     
-    
     if BTaken(SortT(i,2)) || ATaken(SortT(i,1))
         %if ismember(SortT(i,2),BTaken) || ismember(SortT(i,1),ATaken)
-        
     else
-        
-        
         
         TrackVect(bDes,2) = TrackVect(bSrc,2);
         EdgeVect(bSrc) = SortT(i,3);

@@ -3,7 +3,7 @@
 %   I've made a fair amount of changes
 %
 
-function DrawTracks(im,Segs,fName)
+function DrawTracks(im,Segs,fName,videoHandle)
 fprintf(1,'\tDrawing tracks and saving to tif\n')
 fprintf(1,'\t\tframe 1')
 
@@ -12,20 +12,25 @@ fprintf(1,'\t\tframe 1')
 cmap = colormap('jet');
 cmap = cmap(randperm(size(cmap,1)),:);
 
-saveframe  = 1;
+saveframeTiff  = 0;
+if exist('videoHandle','var') && ~isempty(videoHandle)
+    saveframeMP4  = 1;
+else
+    saveframeMP4  = 0;
+end
 
 AllTracks = [Segs.Tid];
 Tracks = unique(AllTracks);
 counts = hist(AllTracks,Tracks);
 
-
 %%
+[~,fnameShort,~]  = fileparts(fName);
+
 
 Fr = {};
-h = figure('position',[0 0 1600 700]);
+h = figure('position',[0 0 1000 500]);
 
-
-if 1
+if 0
     % plot
     
     imt = im(:,:,1);
@@ -52,8 +57,10 @@ if 1
     end
     
     F = getframe(h);
-    Fr{end+1} = F.cdata;
-        
+    F = F.cdata;
+    F = imresize(F,0.5);
+    Fr{end+1} = F;
+    
     clf()
     
     ax1 = axes('Position',[0.05 0.05 0.45 0.9]);
@@ -87,8 +94,10 @@ if 1
     end
     
     F = getframe(h);
-    Fr{end+1} = F.cdata;
-       
+    F = F.cdata;
+    F = imresize(F,0.5);
+    Fr{end+1} = F;
+    
 end
 
 
@@ -96,9 +105,6 @@ end
 
 
 %%
-
-
-
 %h = figure('Visible', 'off');
 % h = figure('position',[0 0 1600 700]);
 for i = 1:size(im,3)
@@ -142,34 +148,49 @@ for i = 1:size(im,3)
         text(cent(1),cent(2),num2str(Tsegs(ii).Tid),'Color',trackcolor,'FontSize',10)
         
         if Tsegs(ii).Label==1
-            viscircles([cent(1),cent(2)],20,'Color','g');
+            plot(cent(1),cent(2),'+','Color','g','markersize', 10)
+%             viscircles([cent(1),cent(2)],20,'Color','g');
         elseif Tsegs(ii).Label==2
-            viscircles([cent(1),cent(2)],20,'Color','r');
+            plot(cent(1),cent(2),'+','Color','r','markersize', 10)
+%             viscircles([cent(1),cent(2)],20,'Color','r');
         end
     end
+    
+    text(10,10,fnameShort,'color','red')
     %hold off
+    
+    
+    
     drawnow
     F = getframe(h);
-    Fr{end+1} = F.cdata;
+    F = F.cdata;
+    F = imresize(F,0.5);
+    Fr{end+1} = F;
     
-    
-end   
+end
 close(h)
 
-
-firstRound = 1;
-for i = 1:length(Fr)
-    
-    if saveframe
-        
+%%
+if saveframeTiff
+    firstRound = 1;
+    for i = 1:length(Fr)
         if firstRound == 1
             imwrite(Fr{i},fName,'WriteMode','overwrite')
             firstRound = 0;
         else
             imwrite(Fr{i},fName,'WriteMode','append')
         end
-    end    
-    %
+        
+        %
+    end
+end
+%%
+
+if saveframeMP4
+    
+    for i = 1:length(Fr)
+        writeVideo(videoHandle,Fr{i})    
+    end
 end
 
 end

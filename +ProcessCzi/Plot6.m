@@ -15,9 +15,9 @@ hold off
 subplot(4,3,5)
 histogram(I(1:10:end))
 hold on
-plot([4,4], ylim)
-plot([-2,-2], ylim)
-xlim([-5 5])
+plot([1,1], ylim)
+plot([-1,-1], ylim)
+xlim([-3 3])
 grid on
 hold off
 %
