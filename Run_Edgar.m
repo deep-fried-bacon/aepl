@@ -4,6 +4,8 @@ LotsOfCells = 'D:\Google\MSK data';
 
 AllDataDrive = 'G:\MSKCC_Baylies-Lab_Rhabdo-Data\*\*\Czi';
 
+TestWell = 'G:\MSKCC_Baylies-Lab_Rhabdo-Data\RH30\18-11-07.rht\Czi';
+
 [exper,condits] = ReadCsvAsCondits(experPath);
 
 SummarizeData.RunSummarizeData(experPath,exper,condits)
@@ -13,10 +15,13 @@ ProcessCzi.initConstants
 global CONST
 
 CONST.DRAW_MODE = 0;
+CONST.DRAW_MODE = 1;
 
+ProcessCzi.RunProcessCzi(TestWell)
 
 ProcessCzi.RunProcessCzi(LotsOfCells)
-profile on 
-ProcessCzi.RunProcessCzi(AllDataDrive)
-profile viewer
 
+ProcessCzi.RunProcessCzi(AllDataDrive)
+
+
+RunPlotData();

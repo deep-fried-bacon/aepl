@@ -28,7 +28,7 @@ counts = hist(AllTracks,Tracks);
 
 
 Fr = {};
-h = figure('position',[0 0 1000 500]);
+h = figure('position',[50 50 1400 700]);
 
 if 0
     % plot
@@ -95,7 +95,6 @@ if 0
     
     F = getframe(h);
     F = F.cdata;
-    F = imresize(F,0.5);
     Fr{end+1} = F;
     
 end
@@ -138,20 +137,20 @@ for i = 1:size(im,3)
         xs = size(imt,1);
         cent(1) = cent(1)+xs;
         
-        if counts(Tracks==Tsegs(ii).Tid)>5
+        if counts(Tracks==Tsegs(ii).Tid)>10
             trackcolor = cmap(cid,:);
         else
             trackcolor = [0.5,0.5,0.5];
         end
         
-        plot(pts(:,2)+xs,pts(:,1),'-','Color',trackcolor,'LineWidth',3)
-        text(cent(1),cent(2),num2str(Tsegs(ii).Tid),'Color',trackcolor,'FontSize',10)
+        plot(pts(:,2)+xs,pts(:,1),'-','Color',trackcolor,'LineWidth',2)
+        text(cent(1),cent(2)-5,num2str(Tsegs(ii).Tid),'Color',trackcolor,'FontSize',6,'BackgroundColor', [.5,.5,.5])
         
         if Tsegs(ii).Label==1
-            plot(cent(1),cent(2),'+','Color','g','markersize', 10)
+            plot(cent(1),cent(2),'+','Color','g','markersize', 20)
 %             viscircles([cent(1),cent(2)],20,'Color','g');
         elseif Tsegs(ii).Label==2
-            plot(cent(1),cent(2),'+','Color','r','markersize', 10)
+            plot(cent(1),cent(2),'x','Color','r','markersize', 20)
 %             viscircles([cent(1),cent(2)],20,'Color','r');
         end
     end
@@ -164,7 +163,6 @@ for i = 1:size(im,3)
     drawnow
     F = getframe(h);
     F = F.cdata;
-    F = imresize(F,0.5);
     Fr{end+1} = F;
     
 end

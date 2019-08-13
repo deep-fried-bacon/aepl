@@ -13,7 +13,7 @@ hold off
 
 
 subplot(4,3,5)
-histogram(I(1:10:end))
+histogram(I(1:5:end))
 hold on
 plot([1,1], ylim)
 plot([-1,-1], ylim)

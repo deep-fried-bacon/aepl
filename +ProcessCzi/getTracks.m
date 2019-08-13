@@ -17,6 +17,7 @@ times = vertcat(Segs.time);
 TimeWindow = 10;
 MaxDist = 150;
 
+%% Get Edges 
 for t = 1:maxT-1
     
     T0 = Segs(times==t);
@@ -37,8 +38,8 @@ SortT(SortT(:,1)==0 | SortT(:,2)==0,:) = [];
 SegVect  = Segs;
 TrackVect = [SegVect.id;SegVect.Tid]';
 EdgeVect = NaN(length(Segs),1);
-%% Assign Tracks
 
+%% Assign Tracks
 BTaken = false(length(TrackVect),1);
 ATaken = false(length(TrackVect),1);
 
@@ -61,6 +62,8 @@ for i = 1:size(SortT,1)
         
     end
 end
+
+%% 
 % % for ii = 1:size(SortT,1)
 % %
 % %     id0 = SortT(ii,1);
@@ -86,8 +89,10 @@ end
 % %
 % % end
 
-SegsOut = Segs;
 
+
+%% Prepare for output 
+SegsOut = Segs;
 for ii = 1:length(Segs)
     sid = Segs(ii).id;
     Tid = TrackVect(TrackVect(:,1)==sid,2);
@@ -98,6 +103,12 @@ for ii = 1:length(Segs)
     SegsOut(ii).Tid = Tid;
 end
 
+%% Mend broken tracks 
+SegsOut = ProcessCzi.JoinFragments(SegsOut,EdgesT);
+
+
+
+%% Plot 
 if 0
     % plot
     f = figure;

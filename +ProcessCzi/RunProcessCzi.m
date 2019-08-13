@@ -22,17 +22,20 @@ end
 %% intialize exper
 exper = struct();
 
+
 dlist = dir(fullfile(experPath,['*',CONST.CZI_SUF]));
 dlist = [ dlist;dir(fullfile(experPath,['*.tif']))];
 
 exper.czi = dlist;
 %exper.frameCount = 0;
 
+S = split(experPath,'*');
+experPath = S{1};
 %% Drawing And Visualization
 
 DrawPlot = CONST.DRAW_MODE;
 
-DrawPlot6 = CONST.DRAW_MODE;
+Draw6Panel = CONST.DRAW_MODE;
 
 if ~(CONST.DRAW_MODE)
     f = waitbar(0,'Please wait...');
@@ -40,23 +43,24 @@ if ~(CONST.DRAW_MODE)
     v2 = [];
 else
     
-    v = VideoWriter('OutputVideo.mp4','MPEG-4');
+    v = VideoWriter(fullfile(experPath,'OutputVideo.mp4'),'MPEG-4');
+    v.Quality = 100;
+    v.FrameRate = 15;
     open(v)
     
     
-    v2 = VideoWriter('OutputVideo6Panel.mp4','MPEG-4');
+    v2 = VideoWriter(fullfile(experPath,'OutputVideo6Panel.mp4'),'MPEG-4');
+    v2.Quality = 100;
+    v2.FrameRate = 15;
     open(v2)
     
 end
 %%
 
 
-for w = 1:1:length(dlist)
+for w = 2:1:length(dlist)
     
     Path1 = dlist(w).folder;
-%     if ~contains(Path1,'RH30\18-11-07')
-%         continue;
-%     end 
     
     %% Make tif dir and csv dir if they don't exist
     tifSaveDir = fullfile(Path1,CONST.ANNOTATED_TIF_DIR);
@@ -80,6 +84,7 @@ for w = 1:1:length(dlist)
     %% initialize paths for saving well data
     wellTifSavePath = fullfile(tifSaveDir,strcat(wellName,'.tif'));
     wellCsvSavePath = fullfile(csvSaveDir,strcat(wellName,'.csv'));
+    wellBW_SavePath = fullfile(tifSaveDir,strcat(wellName,'BW.tif'));
     % used when doing one frame and DrawTracks2
     % wellTifSavePath2 = fullfile(tifSaveDir,strcat(wellName,'_.tif'));
     if ~(CONST.DRAW_MODE)
@@ -103,7 +108,19 @@ for w = 1:1:length(dlist)
     
     %% The heavy lifting - segment (or process) the image (series)
     tic
-    [cells] = ProcessCzi.SegIms(im,DrawPlot6,v2);
+    [cells,BW] = ProcessCzi.SegIms(im,Draw6Panel,v2);
+        
+    %% Write Binaries to a file 
+    if 1 && ~isempty(BW) && DrawPlot 
+        delete(wellBW_SavePath)
+    for i = 1:size(BW,3)
+
+        imwrite(BW(:,:,i),wellBW_SavePath,'writemode','append')
+    end 
+    end 
+    
+    
+    
     fprintf(1,'\t\t')
     toc
     %% from the raw data about every segmented cell from every frame,
