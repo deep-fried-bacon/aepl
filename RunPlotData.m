@@ -23,9 +23,6 @@ for i = 1:length(dlist)
     %%
 end
 
-
-
-
 %%
 root = 'G:\MSKCC_Baylies-Lab_Rhabdo-Data\*\*\Czi\Csv\*.csv';
 
@@ -34,13 +31,16 @@ root = 'G:\MSKCC_Baylies-Lab_Rhabdo-Data\*\*\Czi\Csv\*.csv';
 [rawdata,well] = PlotData.CollectData(root);
 
 profile on 
-Data = PlotData.MakeFeatures(data);
+Data = PlotData.MakeFeatures(rawdata);
 profile viewer
 
 featureNames = {'Mitosis','Death','Death %','Population','Migration';
                 '(# Cells)','(# Cells)','(% Cells)','(# Cells)','(cm/min)'}';
 %%
 close all
+
+PlotData.ExportData(Data,well,featureNames);
+
 
 PlotData.MakeFigures(Data,well,featureNames)
 

@@ -13,6 +13,7 @@ for i = 1:length(dlist)
     CellLine = regexp(dlist(i).folder, filesep, 'split');
     
     well{i,4} = CellLine{3};
+    well{i,5} = CellLine{4};
     data{i} = readtable(name);
 end
 
