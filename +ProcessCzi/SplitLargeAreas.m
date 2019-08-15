@@ -26,15 +26,13 @@ function imBWout = SplitLargeAreas(BW)
     L = ProcessCzi.SeparateObjects(tooLarge,AreaT1);
 
     imBWout(L>0) = 2;
-    
-    
-    close all
-    figure 
-    imagesc([imBW,imBWout, bI])
-    axis equal 
-    figure 
-    imagesc([label2rgb(bwlabel(imBW),'jet','k','shuffle'),label2rgb(bwlabel(bI),'jet','k','shuffle')])
-    
+   
+%     figure 
+%     imagesc([imBW,imBWout, bI])
+%     axis equal 
+%     figure 
+%     imagesc([label2rgb(bwlabel(imBW),'jet','k','shuffle'),label2rgb(bwlabel(bI),'jet','k','shuffle')])
+%     
     imBWout = imresize(imBWout,size(BW),'method','nearest');
     
     
