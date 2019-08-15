@@ -17,7 +17,7 @@ Disk20 = true(15);
 Disk11 = true(11);
 Disk5 = true(5);
 
-MaxArea = 1500;
+MaxArea = 1800;
 MinArea = 500;
 MinArea2 = 50;
 
@@ -117,7 +117,8 @@ ja=ja+1;
 % bL = bwareaopen(bL,MinArea2);
 % bL = bL & ~imopen(bL,Disk10);
 bE = bD;
-bE = bwareaopen(bE,MinArea2*1.5);
+bE = imopen(bE,ones(1));
+bE = bwareaopen(bE,MinArea2);
 %bE = imdilate(bE,strel('disk',1));
 
 %% Mitotic Segmentation
@@ -139,15 +140,15 @@ bE = bE & ~bBright;
 
 imBW = imBW & ~bBrtE;
 
-imBWbig = bwareaopen(imBW,MaxArea);
+imBWbig = bwareaopen(imBW,1800);
 imBWsml = imBW & ~imBWbig;
 imBW = imBWsml | (imBWbig & ~bE);
+imBW = imfill(imBW,'holes');
 
 imBW = bwareaopen(imBW,MinArea);
 
 imBWFinal = imBW | bBright;
 imBWFinal(1:50,1:50) = 0;
-
 
 %% Split Segmentation
 L1 = ProcessCzi.SplitLargeAreas(imBWFinal);

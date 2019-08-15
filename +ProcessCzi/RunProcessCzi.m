@@ -58,7 +58,7 @@ end
 %%
 
 
-for w = 1:1:length(dlist)
+for w = 1:length(dlist)
     
     Path1 = dlist(w).folder;
     
