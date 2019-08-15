@@ -58,7 +58,7 @@ end
 %%
 
 
-for w = 2:1:length(dlist)
+for w = 1:1:length(dlist)
     
     Path1 = dlist(w).folder;
     
@@ -138,11 +138,11 @@ for w = 2:1:length(dlist)
     %   important for manual validation and checking takes about 20 sec per well, wells take about 40 sec total
     [cells2] = ProcessCzi.AnalyzeCells(cells2);
     if DrawPlot
-        tic
-        ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath,v)
-        %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
-        fprintf(1,'\t\t')
-        toc
+%         tic
+%         ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath,v)
+%         %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
+%         fprintf(1,'\t\t')
+%         toc
     end
     %% Save (x, y) coords in csv
     tic

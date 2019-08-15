@@ -50,6 +50,8 @@ else
         
         I1 = im1(:,:,1,1,t);
         [CC,imBW] = ProcessCzi.SegTexture_MSKCC(I1,t,DrawPlot);
+        
+        
         cells{t} = CC;
         
         BW(:,:,t) = imBW;

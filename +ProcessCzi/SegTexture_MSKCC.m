@@ -139,16 +139,18 @@ CC = ProcessCzi.MakeCells(imBW,t, double(bBright), double(L1));
 if DrawPlot
     
     I3 = cat(3,imBW,bE,bBright);
-    ProcessCzi.Plot4(I2,testHigh,I,I1,I3)
+    %ProcessCzi.Plot4(I2,testHigh,I,I1,I3)
     
-%    ax = subplot(2,3,6);
-%     L1(~imBW) = 0;
-%     LC = mat2gray(label2rgb(bwlabeln(L1),'jet','k','shuffle'));
-%     Icolor = ProcessCzi.MakeColor(Iin,LC);
-%     
-%     imagesc(ax,Icolor)
-%     ax.Position = [2/3,0,1/3,0.5];
-%     grid on
+    
+    ProcessCzi.Plot6(Igrad1,testHigh,I,I1,I3)
+    ax = subplot(2,3,6);
+    L1(~imBW) = 0;
+    LC = mat2gray(label2rgb(bwlabeln(L1),'jet','k','shuffle'));
+    Icolor = ProcessCzi.MakeColor(Iin,LC);
+    
+    imagesc(ax,Icolor)
+    ax.Position = [2/3,0,1/3,0.5];
+    grid on
     
 end
 

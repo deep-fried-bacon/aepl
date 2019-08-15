@@ -23,7 +23,7 @@ function initConstants()
     
     CONST.SET_LAEOUT = [2, 3];    % [rows, columns
     CONST.CONTROL = 'DMSO .1%';
-    CONST.DRAW_MODE = false;
+    CONST.DRAW_MODE = true;
 
 
 end
