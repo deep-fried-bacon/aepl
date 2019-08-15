@@ -76,9 +76,18 @@ imBW1 = imopen(imBW,Disk5);
 imBW = imerode(imBW1,Disk20);
 imBW = bwareaopen(imBW,MinArea);
 
+subaxis('Spacing',0,'Padding',0, 'Margin',0)
+subaxis(2,3,1)
+imagesc(imBW)
+
 %% Find the Edges that separate the cells
 bEdges = imdilate(imBW,ones(5)) & ~imerode(imBW,ones(5));
 EdgeVal = median(I(bEdges));
+
+subaxis(2,3,2)
+imagesc(bEdges)
+subaxis(2,3,3)
+imagesc(EdgeVal)
 
 if EdgeVal>1
     bD = I>1;
