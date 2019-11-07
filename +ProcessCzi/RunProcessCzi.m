@@ -108,16 +108,17 @@ for w = 1:length(dlist)
     
     %% The heavy lifting - segment (or process) the image (series)
     tic
-    [cells,BW] = ProcessCzi.SegIms(im,Draw6Panel,v2);
+%     [cells,BW] = ProcessCzi.SegIms(im,Draw6Panel,v2);
+    [cells,BW] = ProcessCzi.SegIms(im,false,v2);
         
     %% Write Binaries to a file 
-    if 1 && ~isempty(BW) && DrawPlot 
-        delete(wellBW_SavePath)
-    for i = 1:size(BW,3)
-
-        imwrite(BW(:,:,i),wellBW_SavePath,'writemode','append')
-    end 
-    end 
+%     if 1 && ~isempty(BW) && DrawPlot 
+%         delete(wellBW_SavePath)
+%     for i = 1:size(BW,3)
+% 
+%         imwrite(BW(:,:,i),wellBW_SavePath,'writemode','append')
+%     end 
+%     end 
     
     
     
@@ -138,11 +139,11 @@ for w = 1:length(dlist)
     %   important for manual validation and checking takes about 20 sec per well, wells take about 40 sec total
     [cells2] = ProcessCzi.AnalyzeCells(cells2);
     if DrawPlot
-%         tic
-%         ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath,v)
-%         %ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath2);
-%         fprintf(1,'\t\t')
-%         toc
+        tic
+        ProcessCzi.DrawTracks(squeeze(im),cells2,wellTifSavePath,v)
+%         ProcessCzi.DrawTracks2(squeeze(im),cells2,wellTifSavePath);
+        fprintf(1,'\t\t')
+        toc
     end
     %% Save (x, y) coords in csv
     tic

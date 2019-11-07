@@ -5,19 +5,20 @@
 
 function DrawTracks(im,Segs,fName,videoHandle)
 fprintf(1,'\tDrawing tracks and saving to tif\n')
-fprintf(1,'\t\tframe 1')
+% fprintf(1,'\t\tframe 1')
 
 
 
 cmap = colormap('jet');
 cmap = cmap(randperm(size(cmap,1)),:);
 
-saveframeTiff  = 0;
+saveframeTiff  = 1;
 if exist('videoHandle','var') && ~isempty(videoHandle)
     saveframeMP4  = 1;
 else
     saveframeMP4  = 0;
 end
+saveframeMP4  = 0;
 
 AllTracks = [Segs.Tid];
 Tracks = unique(AllTracks);
